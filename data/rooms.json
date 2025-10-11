@@ -1,0 +1,23 @@
+[
+  {
+    "id": "ROOM-1760194819665",
+    "branchId": "3",
+    "roomNumber": "0",
+    "name": "Store Room",
+    "type": "store",
+    "capacity": 4,
+    "location": "GF",
+    "floor": "GF",
+    "amenities": [],
+    "isActive": true,
+    "isBookable": false,
+    "assignedCustomerId": "",
+    "hourlyRate": 0,
+    "monthlyRate": 0,
+    "description": "Store Room",
+    "tags": [],
+    "inventory": [],
+    "createdAt": "2025-10-11T15:00:19.665Z",
+    "updatedAt": "2025-10-11T15:00:19.665Z"
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "id": "PKG-003",
+    "name": "Kettle",
+    "description": "Kettle",
+    "type": "monthly",
+    "price": 30000,
+    "currency": "PKR",
+    "duration": 30,
+    "features": [
+      "Meeting rooms"
+    ],
+    "limitations": [
+      "Limited availability"
+    ],
+    "isActive": true,
+    "branchIds": [],
+    "createdAt": "2025-10-11T15:28:49.111Z",
+    "updatedAt": "2025-10-11T15:28:49.111Z"
+  }
+]
