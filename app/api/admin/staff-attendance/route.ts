@@ -4,6 +4,9 @@ import { authOptions } from "@/lib/auth"
 import { getAllStaffTimeEntries, getStaffTimeStats } from '@/lib/mock-data'
 import { getHybridUsers } from '@/lib/persistent-storage'
 
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)

@@ -8,6 +8,9 @@ import {
   updateInventoryLocation 
 } from '@/lib/inventory-data'
 
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)

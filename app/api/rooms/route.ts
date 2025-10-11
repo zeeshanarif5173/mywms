@@ -3,6 +3,9 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
 import { getHybridRooms, savePersistentRooms, Room } from '@/lib/persistent-rooms'
 
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)

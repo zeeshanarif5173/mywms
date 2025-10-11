@@ -3,6 +3,9 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
 import { getStaffTimeEntries, getStaffByEmail } from '@/lib/mock-data'
 
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
 export async function GET(
   request: NextRequest,
   { params }: { params: { staffId: string } }

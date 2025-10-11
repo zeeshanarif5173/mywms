@@ -3,6 +3,9 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
 import { cancelBooking } from '@/lib/mock-data'
 
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { bookingId: string } }

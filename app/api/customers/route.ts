@@ -3,6 +3,9 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
 import { prisma, isDatabaseAvailable } from '@/lib/prisma'
 
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
 export async function GET() {
   try {
     // Handle build-time scenarios
