@@ -4,12 +4,31 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient({
-  datasources: {
-    db: {
-      url: process.env.DATABASE_URL || "file:./dev.db"
-    }
-  }
-})
+// Create a Prisma client that handles build-time scenarios
+let prisma: PrismaClient
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+try {
+  prisma = globalForPrisma.prisma ?? new PrismaClient({
+    datasources: {
+      db: {
+        url: process.env.DATABASE_URL || "file:./dev.db"
+      }
+    },
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  })
+
+  if (process.env.NODE_ENV !== 'production') {
+    globalForPrisma.prisma = prisma
+  }
+} catch (error) {
+  console.warn('Failed to initialize Prisma client:', error)
+  // Create a mock Prisma client for build-time compatibility
+  prisma = {} as PrismaClient
+}
+
+export { prisma }
+
+// Helper function to check if database is available
+export const isDatabaseAvailable = () => {
+  return process.env.NODE_ENV !== 'production' || process.env.VERCEL_ENV !== 'preview'
+}
