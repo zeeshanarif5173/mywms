@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
       // Show partial URLs for debugging (safe)
       databaseUrlPrefix: process.env.DATABASE_URL?.substring(0, 20) + '...',
       nextAuthUrl: process.env.NEXTAUTH_URL,
+      expectedUrl: 'https://mywms.vercel.app',
       supabaseUrl: process.env.SUPABASE_URL
     }
 
