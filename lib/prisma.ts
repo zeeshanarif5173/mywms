@@ -30,5 +30,6 @@ export { prisma }
 
 // Helper function to check if database is available
 export const isDatabaseAvailable = () => {
-  return process.env.NODE_ENV !== 'production' || process.env.VERCEL_ENV !== 'preview'
+  // Database is now available in all environments
+  return true
 }
