@@ -1,4 +1,4 @@
-# Coworking Management Portal
+# Coworking Management Portal - Vercel Deployment Ready
 
 A modern coworking space management system built with Next.js, Express, PostgreSQL, and Prisma.
 
