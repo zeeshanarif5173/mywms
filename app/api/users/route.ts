@@ -120,10 +120,10 @@ export async function POST(request: NextRequest) {
     } catch (error) {
       console.error('Error checking existing users:', error)
       console.error('Error type:', typeof error)
-      console.error('Error message:', error?.message)
-      console.error('Error stack:', error?.stack)
+      console.error('Error message:', error instanceof Error ? error.message : 'Unknown error')
+      console.error('Error stack:', error instanceof Error ? error.stack : undefined)
       return NextResponse.json(
-        { error: `Database connection error: ${error?.message || 'Unknown error'}` },
+        { error: `Database connection error: ${error instanceof Error ? error.message : 'Unknown error'}` },
         { status: 500 }
       )
     }
@@ -148,10 +148,10 @@ export async function POST(request: NextRequest) {
     } catch (error) {
       console.error('Error checking branch:', error)
       console.error('Error type:', typeof error)
-      console.error('Error message:', error?.message)
-      console.error('Error stack:', error?.stack)
+      console.error('Error message:', error instanceof Error ? error.message : 'Unknown error')
+      console.error('Error stack:', error instanceof Error ? error.stack : undefined)
       return NextResponse.json(
-        { error: `Database connection error: ${error?.message || 'Unknown error'}` },
+        { error: `Database connection error: ${error instanceof Error ? error.message : 'Unknown error'}` },
         { status: 500 }
       )
     }

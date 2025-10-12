@@ -35,11 +35,8 @@ export async function POST(request: NextRequest) {
     const contract = await prisma.contract.create({
       data: {
         customerId: customer.id,
-        status: 'PENDING',
-        type: 'REQUEST',
-        fileName: null,
-        fileUrl: null,
-        uploadedBy: null
+        status: 'Requested',
+        fileUrl: null
       }
     })
 

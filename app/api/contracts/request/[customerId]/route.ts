@@ -61,10 +61,10 @@ export async function GET(
       customerId: contract.customerId.toString(),
       status: contract.status === 'ACTIVE' ? 'Completed' : 'Pending',
       requestedAt: contract.createdAt.toISOString(),
-      uploadedAt: contract.updatedAt.toISOString(),
-      contractFileName: contract.fileName || undefined,
+      uploadedAt: contract.status === 'ACTIVE' ? contract.createdAt.toISOString() : undefined,
+      contractFileName: contract.fileUrl ? 'contract.pdf' : undefined,
       contractFileUrl: contract.fileUrl || undefined,
-      uploadedBy: contract.uploadedBy || undefined
+      uploadedBy: contract.status === 'ACTIVE' ? 'Admin' : undefined
     }))
 
     return NextResponse.json(transformedRequests)

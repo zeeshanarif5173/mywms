@@ -42,9 +42,9 @@ export async function GET(request: NextRequest) {
     console.error('Database connection test failed:', error)
     return NextResponse.json({
       success: false,
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error',
       errorType: typeof error,
-      stack: error.stack
+      stack: error instanceof Error ? error.stack : undefined
     }, { status: 500 })
   }
 }
