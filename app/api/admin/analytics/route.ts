@@ -3,14 +3,21 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
 import { prisma } from '@/lib/prisma'
 
-// Force dynamic rendering
+// Force dynamic rendering and prevent static generation
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 export const preferredRegion = 'auto'
+export const revalidate = 0
+
+// Check if we're in a build environment
+const isBuildTime = typeof window === 'undefined' && 
+  (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) ||
+  process.env.VERCEL_ENV === 'preview' ||
+  process.env.CI === 'true'
 
 export async function GET(request: NextRequest) {
-  // Return mock data during build to prevent build failures
-  if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
+  // Immediately return mock data if in build environment
+  if (isBuildTime) {
     return NextResponse.json({
       totalCustomers: 0,
       activeCustomers: 0,
