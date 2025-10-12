@@ -1,6 +1,6 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { 
@@ -11,7 +11,8 @@ import {
   ClockIcon,
   BuildingOfficeIcon,
   BellIcon,
-  KeyIcon
+  KeyIcon,
+  ArrowRightOnRectangleIcon
 } from '@heroicons/react/24/outline'
 
 interface CustomerLayoutProps {
@@ -95,6 +96,17 @@ export default function CustomerLayout({ children }: CustomerLayoutProps) {
               )
             })}
           </nav>
+
+          {/* Logout Button */}
+          <div className="border-t border-gray-200 p-4">
+            <button
+              onClick={() => signOut({ callbackUrl: '/auth/signin' })}
+              className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+            >
+              <ArrowRightOnRectangleIcon className="w-4 h-4 mr-2" />
+              Logout
+            </button>
+          </div>
 
           {/* Footer */}
           <div className="border-t border-gray-200 p-4">

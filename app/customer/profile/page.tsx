@@ -52,9 +52,8 @@ export default function CustomerProfile() {
     const loadCustomer = async () => {
       try {
         setLoading(true)
-        // Get customer ID from session user ID
-        const customerId = session?.user?.id || '1'
-        const response = await fetch(`/api/customer/get/${customerId}`)
+        // Use session email to find customer (API will handle the lookup)
+        const response = await fetch(`/api/customer/get/email`)
         
         if (response.ok) {
           const customerData = await response.json()
