@@ -11,8 +11,11 @@ import {
   ChartBarIcon,
   UserGroupIcon,
   ExclamationTriangleIcon,
-  CheckCircleIcon
+  CheckCircleIcon,
+  LockClosedIcon
 } from '@heroicons/react/24/outline'
+import PasswordChangeModal from '@/components/PasswordChangeModal'
+import toast from 'react-hot-toast'
 
 export default function Dashboard() {
   const { data: session } = useSession()
@@ -23,6 +26,7 @@ export default function Dashboard() {
     totalBookings: 0,
     todayHours: 0
   })
+  const [showPasswordModal, setShowPasswordModal] = useState(false)
 
   const userRole = session?.user?.role || 'CUSTOMER'
 
@@ -66,6 +70,31 @@ export default function Dashboard() {
       loadStats()
     }
   }, [session, userRole])
+
+  const handlePasswordChange = async (currentPassword: string, newPassword: string) => {
+    try {
+      const response = await fetch('/api/users/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          currentPassword,
+          newPassword,
+          userId: session?.user?.id
+        })
+      })
+
+      if (response.ok) {
+        toast.success('Password changed successfully!')
+      } else {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to change password')
+      }
+    } catch (error) {
+      throw error
+    }
+  }
 
   if (userRole === 'CUSTOMER') {
     return (
@@ -164,6 +193,14 @@ export default function Dashboard() {
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <button
+                  onClick={() => setShowPasswordModal(true)}
+                  className="flex items-center space-x-3 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <LockClosedIcon className="w-6 h-6 text-gray-600" />
+                  <span className="text-sm font-medium text-gray-900">Change Password</span>
+                </button>
+                
+                <button
                   onClick={() => router.push('/customer/complaints/new')}
                   className="flex items-center space-x-3 p-4 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors"
                 >
@@ -217,6 +254,13 @@ export default function Dashboard() {
             </div>
           </div>
         </main>
+        
+        {/* Password Change Modal */}
+        <PasswordChangeModal
+          isOpen={showPasswordModal}
+          onClose={() => setShowPasswordModal(false)}
+          onSave={handlePasswordChange}
+        />
       </div>
     )
   }

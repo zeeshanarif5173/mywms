@@ -52,6 +52,7 @@ export default function AdminUsers() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    password: '',
     phone: '',
     role: 'CUSTOMER' as 'ADMIN' | 'MANAGER' | 'STAFF' | 'TEAM_LEAD' | 'CUSTOMER' | 'VENDOR',
     branchId: '1',
@@ -208,6 +209,7 @@ export default function AdminUsers() {
     setFormData({
       name: user.name,
       email: user.email,
+      password: '', // Don't populate password for security
       phone: user.phone || '',
       role: user.role,
       branchId: user.branchId || '1',
@@ -294,6 +296,7 @@ export default function AdminUsers() {
     setFormData({
       name: '',
       email: '',
+      password: '',
       phone: '',
       role: 'CUSTOMER',
       branchId: '1',
@@ -730,6 +733,27 @@ export default function AdminUsers() {
                         required
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Password {showAddModal ? '*' : ''}
+                      </label>
+                      <input
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        required={showAddModal}
+                        placeholder={showAddModal ? "Enter password for new user" : "Leave empty to keep current password"}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                      {showAddModal && (
+                        <p className="mt-1 text-sm text-gray-500">This password will be used for login</p>
+                      )}
+                      {showEditModal && (
+                        <p className="mt-1 text-sm text-gray-500">Leave empty to keep current password</p>
+                      )}
                     </div>
                     
                     <div>
