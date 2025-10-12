@@ -50,11 +50,23 @@ export async function POST(request: NextRequest) {
   try {
     console.log('POST /api/users - Starting user creation')
     
-    // Check if Prisma client is properly initialized
+    // Check if Prisma client is properly initialized and test connection
     if (!prisma || typeof prisma.customer === 'undefined') {
       console.error('Prisma client not properly initialized:', prisma)
       return NextResponse.json(
-        { error: 'Database client not initialized. Please try again.' },
+        { error: 'Database connection failed. Please refresh and try again.' },
+        { status: 500 }
+      )
+    }
+
+    // Test database connection
+    try {
+      await prisma.$connect()
+      console.log('Database connection successful')
+    } catch (connectionError) {
+      console.error('Database connection failed:', connectionError)
+      return NextResponse.json(
+        { error: 'Database connection failed. Please try again.' },
         { status: 500 }
       )
     }
