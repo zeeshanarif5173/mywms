@@ -115,6 +115,19 @@ export async function POST(request: NextRequest) {
     // Generate gatePassId if not provided
     const finalGatePassId = gatePassId || `GP-${Date.now()}`
     
+    // Check if branch exists
+    const branchIdInt = parseInt(branchId) || 1
+    const branch = await prisma.branch.findUnique({
+      where: { id: branchIdInt }
+    })
+    
+    if (!branch) {
+      return NextResponse.json(
+        { error: `Branch with ID ${branchIdInt} not found` },
+        { status: 400 }
+      )
+    }
+    
     // Create new user in database (Customer model doesn't store password)
     const newUser = await prisma.customer.create({
       data: {
@@ -125,7 +138,7 @@ export async function POST(request: NextRequest) {
         accountStatus: accountStatus || 'Active',
         gatePassId: finalGatePassId,
         packageId: packageId ? parseInt(packageId) : null,
-        branchId: parseInt(branchId) || 1,
+        branchId: branchIdInt,
         remarks: remarks || ''
       },
       include: {
@@ -142,8 +155,16 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Error creating user:', error)
+    console.error('Error details:', error)
+    
+    // Return more specific error message
+    let errorMessage = 'Failed to create user'
+    if (error instanceof Error) {
+      errorMessage = error.message
+    }
+    
     return NextResponse.json(
-      { error: 'Failed to create user' },
+      { error: errorMessage },
       { status: 500 }
     )
   }
@@ -179,9 +200,9 @@ export async function PUT(request: NextRequest) {
     } = body
 
     // Validate required fields
-    if (!id || !name || !email || !role) {
+    if (!id || !name || !email) {
       return NextResponse.json(
-        { error: 'ID, name, email, and role are required' },
+        { error: 'ID, name, and email are required' },
         { status: 400 }
       )
     }
@@ -235,11 +256,10 @@ export async function PUT(request: NextRequest) {
       name,
       email,
       phone: phone || '',
-      role,
       branchId: parseInt(branchId) || 1,
       accountStatus: accountStatus || 'Active',
-      companyName: companyName || '',
-      packageId: packageId || '',
+      company: companyName || '',
+      packageId: packageId ? parseInt(packageId) : null,
       gatePassId: gatePassId || '',
       remarks: remarks || ''
     }
