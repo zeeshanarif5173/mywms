@@ -22,7 +22,7 @@ import {
   KeyIcon,
   ClipboardDocumentIcon
 } from '@heroicons/react/24/outline'
-import { generateUniqueId } from '@/lib/id-generator'
+import { generateUniqueId, copyToClipboard } from '@/lib/id-generator'
 
 interface User {
   id: string
@@ -68,6 +68,13 @@ export default function AdminUsers() {
   const [generatedIds, setGeneratedIds] = useState({
     packageId: '',
     gatePassId: ''
+  })
+  const [copyFeedback, setCopyFeedback] = useState<{
+    packageId: boolean
+    gatePassId: boolean
+  }>({
+    packageId: false,
+    gatePassId: false
   })
 
   // Load users based on role permissions
@@ -333,6 +340,19 @@ export default function AdminUsers() {
       packageId,
       gatePassId
     }))
+  }
+
+  const handleCopyId = async (id: string, type: 'packageId' | 'gatePassId') => {
+    try {
+      await copyToClipboard(id)
+      setCopyFeedback(prev => ({ ...prev, [type]: true }))
+      setTimeout(() => {
+        setCopyFeedback(prev => ({ ...prev, [type]: false }))
+      }, 2000)
+    } catch (error) {
+      console.error('Failed to copy ID:', error)
+      alert('Failed to copy ID to clipboard')
+    }
   }
 
   if (loading) {
@@ -851,13 +871,30 @@ export default function AdminUsers() {
                         <button
                           type="button"
                           onClick={() => {
+                            if (formData.packageId) {
+                              handleCopyId(formData.packageId, 'packageId')
+                            }
+                          }}
+                          className={`px-3 py-2 rounded-lg transition-colors ${
+                            copyFeedback.packageId 
+                              ? 'bg-green-100 text-green-700' 
+                              : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                          }`}
+                          title={formData.packageId ? "Copy Package ID to clipboard" : "No ID to copy"}
+                          disabled={!formData.packageId}
+                        >
+                          <ClipboardDocumentIcon className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
                             const newId = generateUniqueId('package')
                             setFormData(prev => ({ ...prev, packageId: newId }))
                           }}
-                          className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+                          className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
                           title="Generate new Package ID"
                         >
-                          <ClipboardDocumentIcon className="h-4 w-4" />
+                          <KeyIcon className="h-4 w-4" />
                         </button>
                       </div>
                       <p className="mt-1 text-xs text-gray-500">Auto-generated unique 8-digit ID</p>
@@ -873,13 +910,30 @@ export default function AdminUsers() {
                         <button
                           type="button"
                           onClick={() => {
+                            if (formData.gatePassId) {
+                              handleCopyId(formData.gatePassId, 'gatePassId')
+                            }
+                          }}
+                          className={`px-3 py-2 rounded-lg transition-colors ${
+                            copyFeedback.gatePassId 
+                              ? 'bg-green-100 text-green-700' 
+                              : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                          }`}
+                          title={formData.gatePassId ? "Copy Gate Pass ID to clipboard" : "No ID to copy"}
+                          disabled={!formData.gatePassId}
+                        >
+                          <ClipboardDocumentIcon className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
                             const newId = generateUniqueId('gatepass')
                             setFormData(prev => ({ ...prev, gatePassId: newId }))
                           }}
-                          className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+                          className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
                           title="Generate new Gate Pass ID"
                         >
-                          <ClipboardDocumentIcon className="h-4 w-4" />
+                          <KeyIcon className="h-4 w-4" />
                         </button>
                       </div>
                       <p className="mt-1 text-xs text-gray-500">Auto-generated unique 8-digit ID</p>

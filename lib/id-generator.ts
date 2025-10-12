@@ -76,9 +76,47 @@ export function generateUniqueId(type: 'package' | 'gatepass' | 'customer', maxR
     
     if (attempts >= maxRetries) {
       console.warn(`Could not generate unique ${type} ID after ${maxRetries} attempts`)
+      // Fallback: use timestamp for absolute uniqueness
+      const timestamp = Date.now().toString().slice(-8)
+      if (type === 'package') {
+        id = `PKG-${timestamp}`
+      } else if (type === 'gatepass') {
+        id = `GP-${timestamp}`
+      } else {
+        id = `CUST-${timestamp}`
+      }
       break
     }
   } while (!isIdUnique(id, type))
   
   return id
+}
+
+/**
+ * Copies text to clipboard
+ * @param text The text to copy
+ * @returns Promise that resolves when copy is complete
+ */
+export async function copyToClipboard(text: string): Promise<void> {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      // Use modern clipboard API
+      await navigator.clipboard.writeText(text)
+    } else {
+      // Fallback for older browsers or non-secure contexts
+      const textArea = document.createElement('textarea')
+      textArea.value = text
+      textArea.style.position = 'fixed'
+      textArea.style.left = '-999999px'
+      textArea.style.top = '-999999px'
+      document.body.appendChild(textArea)
+      textArea.focus()
+      textArea.select()
+      document.execCommand('copy')
+      textArea.remove()
+    }
+  } catch (error) {
+    console.error('Failed to copy to clipboard:', error)
+    throw new Error('Failed to copy to clipboard')
+  }
 }
