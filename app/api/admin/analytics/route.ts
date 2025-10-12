@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
-import { 
-  getAllCustomers, 
-  getAllTimeEntries, 
-  getAllBookings,
-  getCustomerByEmail
-} from '@/lib/mock-data'
+import { prisma } from '@/lib/prisma'
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
@@ -24,10 +19,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 })
     }
 
-    // Get all data
-    const customers = getAllCustomers()
-    const timeEntries = getAllTimeEntries()
-    const bookings = getAllBookings()
+    // Get all data from database
+    const [customers, timeEntries, bookings] = await Promise.all([
+      prisma.user.findMany(),
+      prisma.timeEntry.findMany(),
+      prisma.booking.findMany()
+    ])
 
     // Calculate analytics
     const totalCustomers = customers.length

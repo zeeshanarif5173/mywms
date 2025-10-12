@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
-import { getAllCustomers, getAllTimeEntries, getAllBookings } from '@/lib/mock-data'
+import { prisma } from '@/lib/prisma'
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
@@ -19,15 +19,18 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Only admins can access dashboard stats' }, { status: 403 })
     }
 
-    // Get real data from mock storage
-    const customers = getAllCustomers()
-    const timeEntries = getAllTimeEntries()
-    const bookings = getAllBookings()
+    // Get real data from database
+    const [totalUsers, activeUsers, lockedUsers, timeEntries] = await Promise.all([
+      prisma.user.count(),
+      prisma.user.count({ where: { accountStatus: 'Active' } }),
+      prisma.user.count({ where: { accountStatus: 'Locked' } }),
+      prisma.timeEntry.findMany()
+    ])
 
     // Calculate stats
-    const totalCustomers = customers.length
-    const activeAccounts = customers.filter(c => c.accountStatus === 'Active').length
-    const lockedAccounts = customers.filter(c => c.accountStatus === 'Locked').length
+    const totalCustomers = totalUsers
+    const activeAccounts = activeUsers
+    const lockedAccounts = lockedUsers
 
     // Calculate monthly revenue based on time entries (simplified calculation)
     const currentMonth = new Date().getMonth()

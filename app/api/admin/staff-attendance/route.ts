@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
-import { getAllStaffTimeEntries, getStaffTimeStats } from '@/lib/mock-data'
-import { getHybridUsers } from '@/lib/persistent-storage'
+import { prisma } from '@/lib/prisma'
 
 
 // Force dynamic rendering
@@ -26,16 +25,55 @@ export async function GET(request: NextRequest) {
     const staffId = searchParams.get('staffId')
     const branchId = searchParams.get('branchId')
 
-    // Get all staff users
-    const allUsers = getHybridUsers()
-    const staffUsers = allUsers.filter((user: any) => 
-      user.role === 'STAFF' || user.role === 'TEAM_LEAD'
-    )
+    // Get all staff users from database
+    const staffUsers = await prisma.user.findMany({
+      where: {
+        role: {
+          in: ['STAFF', 'TEAM_LEAD']
+        }
+      },
+      include: {
+        branch: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      }
+    })
 
     // Get attendance data for all staff
-    const staffAttendanceData = staffUsers.map((staff: any) => {
-      const timeEntries = getAllStaffTimeEntries(staff.id, startDate || undefined, endDate || undefined)
-      const stats = getStaffTimeStats(staff.id, startDate || undefined, endDate || undefined)
+    const staffAttendanceData = await Promise.all(staffUsers.map(async (staff) => {
+      // Get time entries for this staff member
+      const whereClause: any = {
+        userId: staff.id
+      }
+
+      if (startDate && endDate) {
+        whereClause.date = {
+          gte: new Date(startDate),
+          lte: new Date(endDate)
+        }
+      }
+
+      const timeEntries = await prisma.timeEntry.findMany({
+        where: whereClause,
+        orderBy: {
+          date: 'desc'
+        }
+      })
+
+      // Calculate stats
+      const totalHours = timeEntries.reduce((sum, entry) => sum + (entry.duration || 0), 0) / 60
+      const totalDays = new Set(timeEntries.map(entry => entry.date.toISOString().split('T')[0])).size
+      const currentEntry = timeEntries.find(entry => !entry.checkOutTime)
+      const currentStatus = currentEntry ? 'Checked In' : 'Checked Out'
+      
+      const stats = {
+        totalHours: Math.round(totalHours * 100) / 100,
+        totalDays,
+        currentStatus
+      }
       
       return {
         staff: {
@@ -44,13 +82,14 @@ export async function GET(request: NextRequest) {
           email: staff.email,
           role: staff.role,
           branchId: staff.branchId,
-          accountStatus: staff.accountStatus
+          accountStatus: staff.accountStatus,
+          branch: staff.branch
         },
         timeEntries,
         stats,
         currentStatus: stats.currentStatus
       }
-    })
+    }))
 
     // Filter by branch if specified
     let filteredData = staffAttendanceData

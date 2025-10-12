@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
-import { getAllComplaints } from '@/lib/mock-data'
+import { prisma } from '@/lib/prisma'
 
 
 // Force dynamic rendering
@@ -19,8 +19,27 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 })
     }
 
-    // Get all complaints from mock data
-    const complaints = getAllComplaints()
+    // Get all complaints from database
+    const complaints = await prisma.complaint.findMany({
+      include: {
+        customer: {
+          select: {
+            id: true,
+            name: true,
+            email: true
+          }
+        },
+        branch: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
 
     return NextResponse.json(complaints, { status: 200 })
 
