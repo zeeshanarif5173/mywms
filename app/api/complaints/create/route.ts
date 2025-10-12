@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { getCustomerByEmail, createComplaint } from '@/lib/mock-data'
+import { prisma } from '@/lib/prisma'
 
 
 // Force dynamic rendering
@@ -31,7 +31,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Find customer by email
-    const customer = getCustomerByEmail(session.user.email!)
+    const customer = await prisma.customer.findUnique({
+      where: { email: session.user.email! },
+      include: {
+        branch: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      }
+    })
 
     if (!customer) {
       return NextResponse.json(
@@ -48,8 +58,31 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create complaint using mock data
-    const newComplaint = createComplaint(customer.id, customer.branchId, title, description)
+    // Create complaint in database
+    const newComplaint = await prisma.complaint.create({
+      data: {
+        customerId: customer.id,
+        title,
+        description,
+        status: 'Open',
+        imageUrl: imageUrl || null
+      },
+      include: {
+        customer: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            branch: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          }
+        }
+      }
+    })
 
     return NextResponse.json(newComplaint, { status: 201 })
   } catch (error) {

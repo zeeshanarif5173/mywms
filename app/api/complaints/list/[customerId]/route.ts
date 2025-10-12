@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
-import { getComplaintsByCustomerId } from '@/lib/mock-data'
+import { prisma } from '@/lib/prisma'
 
 
 // Force dynamic rendering
@@ -27,8 +27,30 @@ export async function GET(
       )
     }
 
-    // Get complaints from mock data
-    const complaints = getComplaintsByCustomerId(customerId)
+    // Get complaints from database
+    const complaints = await prisma.complaint.findMany({
+      where: {
+        customerId: parseInt(customerId)
+      },
+      include: {
+        customer: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            branch: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
 
     return NextResponse.json(complaints, { status: 200 })
   } catch (error) {

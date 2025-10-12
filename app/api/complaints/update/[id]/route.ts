@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
-import { updateComplaint, getComplaintById } from '@/lib/mock-data'
+import { prisma } from '@/lib/prisma'
 
 
 // Force dynamic rendering
@@ -43,7 +43,24 @@ export async function PUT(
     }
 
     // Get the existing complaint
-    const existingComplaint = getComplaintById(complaintId)
+    const existingComplaint = await prisma.complaint.findUnique({
+      where: { id: parseInt(complaintId) },
+      include: {
+        customer: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            branch: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          }
+        }
+      }
+    })
 
     if (!existingComplaint) {
       return NextResponse.json(
@@ -52,20 +69,30 @@ export async function PUT(
       )
     }
 
-    // Update complaint using mock data
-    const updatedComplaint = updateComplaint(complaintId, {
-      status: status || existingComplaint.status,
-      workCompletionImage: workCompletionImage || existingComplaint.imageUrl,
-      resolvedAt: status === 'Resolved' ? new Date().toISOString() : existingComplaint.resolvedAt,
-      updatedAt: new Date().toISOString()
+    // Update complaint in database
+    const updatedComplaint = await prisma.complaint.update({
+      where: { id: parseInt(complaintId) },
+      data: {
+        status: status || existingComplaint.status,
+        imageUrl: workCompletionImage || existingComplaint.imageUrl,
+        resolvedAt: status === 'Resolved' ? new Date() : existingComplaint.resolvedAt
+      },
+      include: {
+        customer: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            branch: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          }
+        }
+      }
     })
-
-    if (!updatedComplaint) {
-      return NextResponse.json(
-        { error: 'Failed to update complaint' },
-        { status: 500 }
-      )
-    }
 
     return NextResponse.json(updatedComplaint, { status: 200 })
   } catch (error) {
