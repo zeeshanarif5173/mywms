@@ -8,10 +8,11 @@ const globalForPrisma = globalThis as unknown as {
 let prisma: PrismaClient
 
 try {
+  // Always try to create a real Prisma client
   prisma = globalForPrisma.prisma ?? new PrismaClient({
     datasources: {
       db: {
-        url: process.env.DATABASE_URL || "file:./dev.db"
+        url: process.env.DATABASE_URL || "postgresql://postgres:4fqU2X_fieMGFV@db.jsogdarzaryzimvbbdpy.supabase.co:5432/postgres"
       }
     },
     log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
@@ -21,9 +22,28 @@ try {
     globalForPrisma.prisma = prisma
   }
 } catch (error) {
-  console.warn('Failed to initialize Prisma client:', error)
-  // Create a mock Prisma client for build-time compatibility
-  prisma = {} as PrismaClient
+  console.error('Failed to initialize Prisma client:', error)
+  console.error('DATABASE_URL:', process.env.DATABASE_URL)
+  
+  // If we're in a build environment, create a mock
+  if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
+    prisma = {} as PrismaClient
+  } else {
+    // For development, try to create with default URL
+    try {
+      prisma = new PrismaClient({
+        datasources: {
+          db: {
+            url: "postgresql://postgres:4fqU2X_fieMGFV@db.jsogdarzaryzimvbbdpy.supabase.co:5432/postgres"
+          }
+        },
+        log: ['error'],
+      })
+    } catch (retryError) {
+      console.error('Retry failed:', retryError)
+      prisma = {} as PrismaClient
+    }
+  }
 }
 
 export { prisma }

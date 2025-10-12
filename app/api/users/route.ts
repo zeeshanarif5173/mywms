@@ -100,10 +100,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user already exists (both in Customer and User models)
-    const [existingCustomer, existingUser] = await Promise.all([
-      prisma.customer.findUnique({ where: { email } }),
-      prisma.user.findUnique({ where: { email } })
-    ])
+    let existingCustomer, existingUser
+    try {
+      [existingCustomer, existingUser] = await Promise.all([
+        prisma.customer.findUnique({ where: { email } }),
+        prisma.user.findUnique({ where: { email } })
+      ])
+    } catch (error) {
+      console.error('Error checking existing users:', error)
+      return NextResponse.json(
+        { error: 'Database connection error. Please try again.' },
+        { status: 500 }
+      )
+    }
 
     if (existingCustomer || existingUser) {
       return NextResponse.json(
@@ -117,9 +126,18 @@ export async function POST(request: NextRequest) {
     
     // Check if branch exists
     const branchIdInt = parseInt(branchId) || 1
-    const branch = await prisma.branch.findUnique({
-      where: { id: branchIdInt }
-    })
+    let branch
+    try {
+      branch = await prisma.branch.findUnique({
+        where: { id: branchIdInt }
+      })
+    } catch (error) {
+      console.error('Error checking branch:', error)
+      return NextResponse.json(
+        { error: 'Database connection error. Please try again.' },
+        { status: 500 }
+      )
+    }
     
     if (!branch) {
       return NextResponse.json(
