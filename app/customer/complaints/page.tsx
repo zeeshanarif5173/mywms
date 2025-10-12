@@ -15,7 +15,10 @@ import {
   PhotoIcon,
   EyeIcon,
   ChatBubbleLeftRightIcon,
-  XMarkIcon
+  XMarkIcon,
+  BellIcon,
+  PaperAirplaneIcon,
+  ChatBubbleBottomCenterTextIcon
 } from '@heroicons/react/24/outline'
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid'
 
@@ -48,6 +51,8 @@ export default function CustomerComplaints() {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false)
   const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null)
   const [showDetailsModal, setShowDetailsModal] = useState(false)
+  const [showReminderModal, setShowReminderModal] = useState(false)
+  const [showHistoryModal, setShowHistoryModal] = useState(false)
   
   // Form data for creating complaints
   const [formData, setFormData] = useState({
@@ -145,6 +150,34 @@ export default function CustomerComplaints() {
     }
   }
 
+  const handleSendReminder = async () => {
+    if (!selectedComplaint) return
+
+    try {
+      const response = await fetch(`/api/complaints/reminder/${selectedComplaint.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: 'Please provide an update on this complaint. Thank you.'
+        })
+      })
+
+      if (response.ok) {
+        alert('Reminder sent successfully!')
+        setShowReminderModal(false)
+        setSelectedComplaint(null)
+      } else {
+        const error = await response.json()
+        alert(error.error || 'Failed to send reminder')
+      }
+    } catch (error) {
+      console.error('Error sending reminder:', error)
+      alert('Failed to send reminder')
+    }
+  }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({
@@ -232,9 +265,9 @@ export default function CustomerComplaints() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
+      <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
@@ -243,7 +276,7 @@ export default function CustomerComplaints() {
             </div>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 flex items-center space-x-2"
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
             >
               <PlusIcon className="w-5 h-5" />
               <span>New Complaint</span>
@@ -429,16 +462,42 @@ export default function CustomerComplaints() {
                     </span>
                   )}
                 </div>
-                <button
-                  onClick={() => {
-                    setSelectedComplaint(complaint)
-                    setShowDetailsModal(true)
-                  }}
-                  className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center space-x-1"
-                >
-                  <EyeIcon className="w-4 h-4" />
-                  <span>View Details</span>
-                </button>
+                <div className="flex items-center space-x-3">
+                  {complaint.status !== 'Resolved' && (
+                    <button
+                      onClick={() => {
+                        setSelectedComplaint(complaint)
+                        setShowReminderModal(true)
+                      }}
+                      className="text-orange-600 hover:text-orange-800 text-sm font-medium flex items-center space-x-1"
+                      title="Send reminder to management"
+                    >
+                      <BellIcon className="w-4 h-4" />
+                      <span>Remind</span>
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      setSelectedComplaint(complaint)
+                      setShowHistoryModal(true)
+                    }}
+                    className="text-purple-600 hover:text-purple-800 text-sm font-medium flex items-center space-x-1"
+                    title="View complaint history"
+                  >
+                    <ChatBubbleBottomCenterTextIcon className="w-4 h-4" />
+                    <span>History</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedComplaint(complaint)
+                      setShowDetailsModal(true)
+                    }}
+                    className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center space-x-1"
+                  >
+                    <EyeIcon className="w-4 h-4" />
+                    <span>Details</span>
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -733,6 +792,215 @@ export default function CustomerComplaints() {
               <button
                 onClick={() => {
                   setShowDetailsModal(false)
+                  setSelectedComplaint(null)
+                }}
+                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reminder Modal */}
+      {showReminderModal && selectedComplaint && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl max-w-md w-full">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold text-gray-900">Send Reminder</h2>
+                <button
+                  onClick={() => setShowReminderModal(false)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <XMarkIcon className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+            
+            <div className="p-6">
+              <p className="text-sm text-gray-600 mb-4">
+                Send a reminder to management about "{selectedComplaint.title}"
+              </p>
+              
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                <div className="flex items-center">
+                  <BellIcon className="w-5 h-5 text-yellow-600 mr-2" />
+                  <p className="text-sm text-yellow-800">
+                    This will notify the management team to provide an update on your complaint.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => setShowReminderModal(false)}
+                  className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSendReminder}
+                  className="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors flex items-center space-x-2"
+                >
+                  <PaperAirplaneIcon className="w-4 h-4" />
+                  <span>Send Reminder</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* History Modal */}
+      {showHistoryModal && selectedComplaint && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-semibold text-gray-900">Complaint History</h3>
+                <button
+                  onClick={() => {
+                    setShowHistoryModal(false)
+                    setSelectedComplaint(null)
+                  }}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <XMarkIcon className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+            
+            <div className="p-6 space-y-6">
+              {/* Complaint Title */}
+              <div>
+                <h4 className="text-lg font-medium text-gray-900 mb-2">{selectedComplaint.title}</h4>
+                <div className="flex items-center space-x-4">
+                  <span className={`px-3 py-1 text-sm font-semibold rounded-full ${
+                    selectedComplaint.status === 'Open' 
+                      ? 'bg-red-100 text-red-800'
+                      : selectedComplaint.status === 'In Process'
+                      ? 'bg-blue-100 text-blue-800'
+                      : selectedComplaint.status === 'On Hold'
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : selectedComplaint.status === 'Testing'
+                      ? 'bg-purple-100 text-purple-800'
+                      : selectedComplaint.status === 'Resolved'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    {selectedComplaint.status}
+                  </span>
+                  <span className="text-sm text-gray-500">
+                    ID: #{selectedComplaint.id}
+                  </span>
+                </div>
+              </div>
+
+              {/* Timeline */}
+              <div>
+                <h5 className="text-sm font-medium text-gray-700 mb-3">Timeline & Updates</h5>
+                <div className="space-y-4">
+                  {/* Initial Complaint */}
+                  <div className="flex items-start space-x-3">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium text-gray-900">Complaint Created</p>
+                        <span className="text-xs text-gray-500">{new Date(selectedComplaint.createdAt).toLocaleString()}</span>
+                      </div>
+                      <p className="text-sm text-gray-600 mt-1">{selectedComplaint.description}</p>
+                      <div className="mt-2 text-xs text-gray-500">
+                        Status: <span className="font-medium">Open</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Status Updates */}
+                  <div className="flex items-start space-x-3">
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium text-gray-900">Status Updated</p>
+                        <span className="text-xs text-gray-500">{new Date(selectedComplaint.updatedAt).toLocaleString()}</span>
+                      </div>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Status changed to: <span className="font-medium">{selectedComplaint.status}</span>
+                      </p>
+                      <div className="mt-2 text-xs text-gray-500">
+                        Updated by: Management Team
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Resolution */}
+                  {selectedComplaint.resolvedAt && (
+                    <div className="flex items-start space-x-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm font-medium text-gray-900">Complaint Resolved</p>
+                          <span className="text-xs text-gray-500">{new Date(selectedComplaint.resolvedAt).toLocaleString()}</span>
+                        </div>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Resolution time: {calculateResolvingTime(selectedComplaint.createdAt, selectedComplaint.resolvedAt)}
+                        </p>
+                        {selectedComplaint.workCompletionImage && (
+                          <div className="mt-2 text-xs text-gray-500">
+                            Work completion image provided
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Feedback */}
+                  {selectedComplaint.feedback && (
+                    <div className="flex items-start space-x-3">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm font-medium text-gray-900">Feedback Submitted</p>
+                          <span className="text-xs text-gray-500">{new Date(selectedComplaint.feedback.submittedAt).toLocaleString()}</span>
+                        </div>
+                        <div className="mt-1 flex items-center space-x-2">
+                          <div className="flex items-center">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <StarIconSolid
+                                key={star}
+                                className={`w-4 h-4 ${
+                                  star <= selectedComplaint.feedback!.rating
+                                    ? 'text-yellow-400'
+                                    : 'text-gray-300'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-sm text-gray-600">{selectedComplaint.feedback.rating}/5</span>
+                        </div>
+                        {selectedComplaint.feedback.comment && (
+                          <p className="text-sm text-gray-600 mt-1">{selectedComplaint.feedback.comment}</p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Management Updates Placeholder */}
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h5 className="text-sm font-medium text-gray-700 mb-2">Management Updates</h5>
+                <p className="text-sm text-gray-600">
+                  Updates from the management team will appear here as they work on your complaint.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-gray-200 flex justify-end space-x-3">
+              <button
+                onClick={() => {
+                  setShowHistoryModal(false)
                   setSelectedComplaint(null)
                 }}
                 className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
