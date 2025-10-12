@@ -18,8 +18,11 @@ import {
   XCircleIcon,
   UserGroupIcon,
   FunnelIcon,
-  ExclamationTriangleIcon
+  ExclamationTriangleIcon,
+  KeyIcon,
+  ClipboardDocumentIcon
 } from '@heroicons/react/24/outline'
+import { generateUniqueId } from '@/lib/id-generator'
 
 interface User {
   id: string
@@ -61,6 +64,10 @@ export default function AdminUsers() {
     packageId: '',
     gatePassId: '',
     remarks: ''
+  })
+  const [generatedIds, setGeneratedIds] = useState({
+    packageId: '',
+    gatePassId: ''
   })
 
   // Load users based on role permissions
@@ -219,6 +226,10 @@ export default function AdminUsers() {
       gatePassId: user.gatePassId || '',
       remarks: user.remarks || ''
     })
+    setGeneratedIds({
+      packageId: user.packageId || '',
+      gatePassId: user.gatePassId || ''
+    })
     setShowEditModal(true)
   }
 
@@ -306,6 +317,22 @@ export default function AdminUsers() {
       gatePassId: '',
       remarks: ''
     })
+    setGeneratedIds({
+      packageId: '',
+      gatePassId: ''
+    })
+  }
+
+  const generateNewIds = () => {
+    const packageId = generateUniqueId('package')
+    const gatePassId = generateUniqueId('gatepass')
+    
+    setGeneratedIds({ packageId, gatePassId })
+    setFormData(prev => ({
+      ...prev,
+      packageId,
+      gatePassId
+    }))
   }
 
   if (loading) {
@@ -483,6 +510,7 @@ export default function AdminUsers() {
                 <button
                   onClick={() => {
                     resetForm()
+                    generateNewIds()
                     setShowAddModal(true)
                   }}
                   className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -815,24 +843,46 @@ export default function AdminUsers() {
                     
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Package ID</label>
-                      <input
-                        type="text"
-                        name="packageId"
-                        value={formData.packageId}
-                        onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
+                      <div className="flex items-center space-x-2">
+                        <div className="flex-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 flex items-center">
+                          <KeyIcon className="h-4 w-4 text-gray-500 mr-2" />
+                          {formData.packageId || 'Will be generated'}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newId = generateUniqueId('package')
+                            setFormData(prev => ({ ...prev, packageId: newId }))
+                          }}
+                          className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+                          title="Generate new Package ID"
+                        >
+                          <ClipboardDocumentIcon className="h-4 w-4" />
+                        </button>
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500">Auto-generated unique 8-digit ID</p>
                     </div>
                     
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Gate Pass ID</label>
-                      <input
-                        type="text"
-                        name="gatePassId"
-                        value={formData.gatePassId}
-                        onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
+                      <div className="flex items-center space-x-2">
+                        <div className="flex-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 flex items-center">
+                          <KeyIcon className="h-4 w-4 text-gray-500 mr-2" />
+                          {formData.gatePassId || 'Will be generated'}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newId = generateUniqueId('gatepass')
+                            setFormData(prev => ({ ...prev, gatePassId: newId }))
+                          }}
+                          className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+                          title="Generate new Gate Pass ID"
+                        >
+                          <ClipboardDocumentIcon className="h-4 w-4" />
+                        </button>
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500">Auto-generated unique 8-digit ID</p>
                     </div>
                   </div>
                   
