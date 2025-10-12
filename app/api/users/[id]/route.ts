@@ -24,8 +24,8 @@ export async function GET(
 
     const userId = params.id
 
-    // Fetch user from database
-    const user = await prisma.user.findUnique({
+    // Fetch user from database (using Customer model for business users)
+    const user = await prisma.customer.findUnique({
       where: { id: parseInt(userId) },
       include: {
         branch: {
@@ -44,10 +44,7 @@ export async function GET(
       )
     }
 
-    // Remove password from response for security
-    const { password: _, ...userResponse } = user
-
-    return NextResponse.json(userResponse)
+    return NextResponse.json(user)
 
   } catch (error) {
     console.error('Error fetching user:', error)
@@ -78,7 +75,7 @@ export async function PUT(
     const body = await request.json()
 
     // Check if user exists
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.customer.findUnique({
       where: { id: parseInt(userId) }
     })
 
@@ -90,7 +87,7 @@ export async function PUT(
     }
 
     // Update user in database
-    const updatedUser = await prisma.user.update({
+    const updatedUser = await prisma.customer.update({
       where: { id: parseInt(userId) },
       data: body,
       include: {
@@ -103,10 +100,7 @@ export async function PUT(
       }
     })
 
-    // Remove password from response for security
-    const { password: _, ...userResponse } = updatedUser
-
-    return NextResponse.json(userResponse, { status: 200 })
+    return NextResponse.json(updatedUser, { status: 200 })
 
   } catch (error) {
     console.error('Error updating user:', error)
@@ -136,7 +130,7 @@ export async function DELETE(
     const userId = params.id
 
     // Check if user exists
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.customer.findUnique({
       where: { id: parseInt(userId) }
     })
 
@@ -148,7 +142,7 @@ export async function DELETE(
     }
 
     // Delete user from database
-    await prisma.user.delete({
+    await prisma.customer.delete({
       where: { id: parseInt(userId) }
     })
 

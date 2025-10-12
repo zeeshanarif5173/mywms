@@ -20,8 +20,8 @@ export async function GET() {
       return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 })
     }
 
-    // Fetch users from database
-    const users = await prisma.user.findMany({
+    // Fetch users from database (using Customer model for business users)
+    const users = await prisma.customer.findMany({
       include: {
         branch: {
           select: {
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user already exists
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.customer.findUnique({
       where: { email }
     })
 
@@ -111,22 +111,17 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 12)
-
-    // Create new user in database
-    const newUser = await prisma.user.create({
+    // Create new user in database (Customer model doesn't store password)
+    const newUser = await prisma.customer.create({
       data: {
         name,
         email,
-        password: hashedPassword,
         phone: phone || '',
-        role,
-        branchId: parseInt(branchId) || 1,
+        company: companyName || '',
         accountStatus: accountStatus || 'Active',
-        companyName: companyName || '',
-        packageId: packageId || '',
         gatePassId: gatePassId || '',
+        packageId: parseInt(packageId) || null,
+        branchId: parseInt(branchId) || 1,
         remarks: remarks || ''
       },
       include: {
@@ -139,10 +134,7 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // Remove password from response for security
-    const { password: _, ...userResponse } = newUser
-
-    return NextResponse.json(userResponse, { status: 201 })
+    return NextResponse.json(newUser, { status: 201 })
 
   } catch (error) {
     console.error('Error creating user:', error)
@@ -208,7 +200,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Check if user exists
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.customer.findUnique({
       where: { id: parseInt(id) }
     })
 
@@ -233,13 +225,8 @@ export async function PUT(request: NextRequest) {
       remarks: remarks || ''
     }
 
-    // Only update password if provided
-    if (password) {
-      updateData.password = await bcrypt.hash(password, 12)
-    }
-
-    // Update user in database
-    const updatedUser = await prisma.user.update({
+    // Update user in database (Customer model doesn't store password)
+    const updatedUser = await prisma.customer.update({
       where: { id: parseInt(id) },
       data: updateData,
       include: {
@@ -252,10 +239,7 @@ export async function PUT(request: NextRequest) {
       }
     })
 
-    // Remove password from response for security
-    const { password: _, ...userResponse } = updatedUser
-
-    return NextResponse.json(userResponse, { status: 200 })
+    return NextResponse.json(updatedUser, { status: 200 })
 
   } catch (error) {
     console.error('Error updating user:', error)
