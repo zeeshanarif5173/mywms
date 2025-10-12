@@ -9,12 +9,21 @@ export const runtime = 'nodejs'
 export const preferredRegion = 'auto'
 
 export async function GET(request: NextRequest) {
-  try {
-    // Prevent execution during build time
-    if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
-      return NextResponse.json({ error: 'Service not available during build' }, { status: 503 })
-    }
+  // Return mock data during build to prevent build failures
+  if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
+    return NextResponse.json({
+      totalCustomers: 0,
+      activeCustomers: 0,
+      lockedCustomers: 0,
+      totalTimeEntries: 0,
+      totalBookings: 0,
+      averageSessionDuration: 0,
+      topCustomers: [],
+      recentActivity: []
+    })
+  }
 
+  try {
     // Check if Prisma client is available
     if (!prisma || typeof prisma.customer === 'undefined') {
       console.error('Prisma client not available during build')
@@ -180,6 +189,21 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(analytics, { status: 200 })
 
   } catch (error) {
+    // Handle build-time errors gracefully
+    if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
+      console.log('Analytics API called during build time - returning mock data')
+      return NextResponse.json({
+        totalCustomers: 0,
+        activeCustomers: 0,
+        lockedCustomers: 0,
+        totalTimeEntries: 0,
+        totalBookings: 0,
+        averageSessionDuration: 0,
+        topCustomers: [],
+        recentActivity: []
+      })
+    }
+    
     console.error('Error fetching analytics:', error)
     return NextResponse.json(
       { error: 'Failed to fetch analytics' },

@@ -1447,7 +1447,7 @@
     "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
     "department": "Cleaning",
     "priority": "High",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "staff-1",
     "assignedToName": "Mike Johnson",
     "createdBy": "3",
@@ -1482,12 +1482,22 @@
         "userName": "Admin User",
         "newValue": "Mike Johnson",
         "createdAt": "2025-10-12T08:52:56.891Z"
+      },
+      {
+        "id": "1760259420302-0.545955843350652",
+        "taskId": "27",
+        "action": "fine_applied",
+        "description": "Late fine of $50 applied",
+        "userId": "system",
+        "userName": "System",
+        "newValue": "50",
+        "createdAt": "2025-10-12T08:57:00.302Z"
       }
     ],
     "fineAmount": 50,
-    "fineApplied": false,
+    "fineApplied": true,
     "createdAt": "2025-10-12T08:52:56.891Z",
-    "updatedAt": "2025-10-12T08:52:56.891Z"
+    "updatedAt": "2025-10-12T08:57:00.302Z"
   },
   {
     "id": "28",
@@ -1495,7 +1505,7 @@
     "description": "demo",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760016739510",
     "assignedToName": "asim khan ",
     "createdBy": "3",
@@ -1533,7 +1543,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.892Z",
-    "updatedAt": "2025-10-12T08:52:56.892Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "29",
@@ -1541,7 +1551,7 @@
     "description": "mmmjjjj",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760023018069",
     "assignedToName": "usama ",
     "createdBy": "3",
@@ -1579,7 +1589,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.893Z",
-    "updatedAt": "2025-10-12T08:52:56.893Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "30",
@@ -1587,7 +1597,7 @@
     "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
     "department": "Cleaning",
     "priority": "High",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "staff-1",
     "assignedToName": "Mike Johnson",
     "createdBy": "3",
@@ -1622,12 +1632,22 @@
         "userName": "Admin User",
         "newValue": "Mike Johnson",
         "createdAt": "2025-10-12T08:52:56.894Z"
+      },
+      {
+        "id": "1760259420302-0.5025522078663465",
+        "taskId": "30",
+        "action": "fine_applied",
+        "description": "Late fine of $50 applied",
+        "userId": "system",
+        "userName": "System",
+        "newValue": "50",
+        "createdAt": "2025-10-12T08:57:00.302Z"
       }
     ],
     "fineAmount": 50,
-    "fineApplied": false,
+    "fineApplied": true,
     "createdAt": "2025-10-12T08:52:56.894Z",
-    "updatedAt": "2025-10-12T08:52:56.894Z"
+    "updatedAt": "2025-10-12T08:57:00.302Z"
   },
   {
     "id": "31",
@@ -1635,7 +1655,7 @@
     "description": "demo",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760016739510",
     "assignedToName": "asim khan ",
     "createdBy": "3",
@@ -1673,7 +1693,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.895Z",
-    "updatedAt": "2025-10-12T08:52:56.895Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "32",
@@ -1681,7 +1701,7 @@
     "description": "mmmjjjj",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760023018069",
     "assignedToName": "usama ",
     "createdBy": "3",
@@ -1719,7 +1739,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.897Z",
-    "updatedAt": "2025-10-12T08:52:56.897Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "33",
@@ -1727,7 +1747,7 @@
     "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
     "department": "Cleaning",
     "priority": "High",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "staff-1",
     "assignedToName": "Mike Johnson",
     "createdBy": "3",
@@ -1762,12 +1782,22 @@
         "userName": "Admin User",
         "newValue": "Mike Johnson",
         "createdAt": "2025-10-12T08:52:56.908Z"
+      },
+      {
+        "id": "1760259420303-0.043278694358068526",
+        "taskId": "33",
+        "action": "fine_applied",
+        "description": "Late fine of $50 applied",
+        "userId": "system",
+        "userName": "System",
+        "newValue": "50",
+        "createdAt": "2025-10-12T08:57:00.303Z"
       }
     ],
     "fineAmount": 50,
-    "fineApplied": false,
+    "fineApplied": true,
     "createdAt": "2025-10-12T08:52:56.908Z",
-    "updatedAt": "2025-10-12T08:52:56.908Z"
+    "updatedAt": "2025-10-12T08:57:00.303Z"
   },
   {
     "id": "34",
@@ -1775,7 +1805,7 @@
     "description": "demo",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760016739510",
     "assignedToName": "asim khan ",
     "createdBy": "3",
@@ -1813,7 +1843,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.911Z",
-    "updatedAt": "2025-10-12T08:52:56.911Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "35",
@@ -1821,7 +1851,7 @@
     "description": "mmmjjjj",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760023018069",
     "assignedToName": "usama ",
     "createdBy": "3",
@@ -1859,7 +1889,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.912Z",
-    "updatedAt": "2025-10-12T08:52:56.912Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "36",
@@ -1867,7 +1897,7 @@
     "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
     "department": "Cleaning",
     "priority": "High",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "staff-1",
     "assignedToName": "Mike Johnson",
     "createdBy": "3",
@@ -1902,12 +1932,22 @@
         "userName": "Admin User",
         "newValue": "Mike Johnson",
         "createdAt": "2025-10-12T08:52:56.914Z"
+      },
+      {
+        "id": "1760259420303-0.32154117240101665",
+        "taskId": "36",
+        "action": "fine_applied",
+        "description": "Late fine of $50 applied",
+        "userId": "system",
+        "userName": "System",
+        "newValue": "50",
+        "createdAt": "2025-10-12T08:57:00.303Z"
       }
     ],
     "fineAmount": 50,
-    "fineApplied": false,
+    "fineApplied": true,
     "createdAt": "2025-10-12T08:52:56.914Z",
-    "updatedAt": "2025-10-12T08:52:56.914Z"
+    "updatedAt": "2025-10-12T08:57:00.303Z"
   },
   {
     "id": "37",
@@ -1915,7 +1955,7 @@
     "description": "demo",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760016739510",
     "assignedToName": "asim khan ",
     "createdBy": "3",
@@ -1953,7 +1993,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.916Z",
-    "updatedAt": "2025-10-12T08:52:56.916Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "38",
@@ -1961,7 +2001,7 @@
     "description": "mmmjjjj",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760023018069",
     "assignedToName": "usama ",
     "createdBy": "3",
@@ -1999,7 +2039,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.918Z",
-    "updatedAt": "2025-10-12T08:52:56.918Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "39",
@@ -2007,7 +2047,7 @@
     "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
     "department": "Cleaning",
     "priority": "High",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "staff-1",
     "assignedToName": "Mike Johnson",
     "createdBy": "3",
@@ -2042,12 +2082,22 @@
         "userName": "Admin User",
         "newValue": "Mike Johnson",
         "createdAt": "2025-10-12T08:52:56.919Z"
+      },
+      {
+        "id": "1760259420303-0.2892369121829512",
+        "taskId": "39",
+        "action": "fine_applied",
+        "description": "Late fine of $50 applied",
+        "userId": "system",
+        "userName": "System",
+        "newValue": "50",
+        "createdAt": "2025-10-12T08:57:00.303Z"
       }
     ],
     "fineAmount": 50,
-    "fineApplied": false,
+    "fineApplied": true,
     "createdAt": "2025-10-12T08:52:56.919Z",
-    "updatedAt": "2025-10-12T08:52:56.919Z"
+    "updatedAt": "2025-10-12T08:57:00.303Z"
   },
   {
     "id": "40",
@@ -2055,7 +2105,7 @@
     "description": "demo",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760016739510",
     "assignedToName": "asim khan ",
     "createdBy": "3",
@@ -2093,7 +2143,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.921Z",
-    "updatedAt": "2025-10-12T08:52:56.921Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "41",
@@ -2101,7 +2151,7 @@
     "description": "mmmjjjj",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760023018069",
     "assignedToName": "usama ",
     "createdBy": "3",
@@ -2139,7 +2189,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.923Z",
-    "updatedAt": "2025-10-12T08:52:56.923Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "42",
@@ -2147,7 +2197,7 @@
     "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
     "department": "Cleaning",
     "priority": "High",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "staff-1",
     "assignedToName": "Mike Johnson",
     "createdBy": "3",
@@ -2182,12 +2232,22 @@
         "userName": "Admin User",
         "newValue": "Mike Johnson",
         "createdAt": "2025-10-12T08:52:56.925Z"
+      },
+      {
+        "id": "1760259420303-0.7156089169034412",
+        "taskId": "42",
+        "action": "fine_applied",
+        "description": "Late fine of $50 applied",
+        "userId": "system",
+        "userName": "System",
+        "newValue": "50",
+        "createdAt": "2025-10-12T08:57:00.303Z"
       }
     ],
     "fineAmount": 50,
-    "fineApplied": false,
+    "fineApplied": true,
     "createdAt": "2025-10-12T08:52:56.925Z",
-    "updatedAt": "2025-10-12T08:52:56.925Z"
+    "updatedAt": "2025-10-12T08:57:00.303Z"
   },
   {
     "id": "43",
@@ -2195,7 +2255,7 @@
     "description": "demo",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760016739510",
     "assignedToName": "asim khan ",
     "createdBy": "3",
@@ -2233,7 +2293,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.926Z",
-    "updatedAt": "2025-10-12T08:52:56.926Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "44",
@@ -2241,7 +2301,7 @@
     "description": "mmmjjjj",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760023018069",
     "assignedToName": "usama ",
     "createdBy": "3",
@@ -2279,7 +2339,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.928Z",
-    "updatedAt": "2025-10-12T08:52:56.928Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "45",
@@ -2287,7 +2347,7 @@
     "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
     "department": "Cleaning",
     "priority": "High",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "staff-1",
     "assignedToName": "Mike Johnson",
     "createdBy": "3",
@@ -2322,12 +2382,22 @@
         "userName": "Admin User",
         "newValue": "Mike Johnson",
         "createdAt": "2025-10-12T08:52:56.929Z"
+      },
+      {
+        "id": "1760259420303-0.5188650460575219",
+        "taskId": "45",
+        "action": "fine_applied",
+        "description": "Late fine of $50 applied",
+        "userId": "system",
+        "userName": "System",
+        "newValue": "50",
+        "createdAt": "2025-10-12T08:57:00.303Z"
       }
     ],
     "fineAmount": 50,
-    "fineApplied": false,
+    "fineApplied": true,
     "createdAt": "2025-10-12T08:52:56.929Z",
-    "updatedAt": "2025-10-12T08:52:56.929Z"
+    "updatedAt": "2025-10-12T08:57:00.303Z"
   },
   {
     "id": "46",
@@ -2335,7 +2405,7 @@
     "description": "demo",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760016739510",
     "assignedToName": "asim khan ",
     "createdBy": "3",
@@ -2373,7 +2443,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.931Z",
-    "updatedAt": "2025-10-12T08:52:56.931Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "47",
@@ -2381,7 +2451,7 @@
     "description": "mmmjjjj",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760023018069",
     "assignedToName": "usama ",
     "createdBy": "3",
@@ -2419,7 +2489,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.934Z",
-    "updatedAt": "2025-10-12T08:52:56.934Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "48",
@@ -2427,7 +2497,7 @@
     "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
     "department": "Cleaning",
     "priority": "High",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "staff-1",
     "assignedToName": "Mike Johnson",
     "createdBy": "3",
@@ -2462,12 +2532,22 @@
         "userName": "Admin User",
         "newValue": "Mike Johnson",
         "createdAt": "2025-10-12T08:52:56.936Z"
+      },
+      {
+        "id": "1760259420303-0.3962306187189939",
+        "taskId": "48",
+        "action": "fine_applied",
+        "description": "Late fine of $50 applied",
+        "userId": "system",
+        "userName": "System",
+        "newValue": "50",
+        "createdAt": "2025-10-12T08:57:00.303Z"
       }
     ],
     "fineAmount": 50,
-    "fineApplied": false,
+    "fineApplied": true,
     "createdAt": "2025-10-12T08:52:56.936Z",
-    "updatedAt": "2025-10-12T08:52:56.936Z"
+    "updatedAt": "2025-10-12T08:57:00.303Z"
   },
   {
     "id": "49",
@@ -2475,7 +2555,7 @@
     "description": "demo",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760016739510",
     "assignedToName": "asim khan ",
     "createdBy": "3",
@@ -2513,7 +2593,7 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.937Z",
-    "updatedAt": "2025-10-12T08:52:56.937Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
   },
   {
     "id": "50",
@@ -2521,7 +2601,7 @@
     "description": "mmmjjjj",
     "department": "Cleaning",
     "priority": "Medium",
-    "status": "Assigned",
+    "status": "Overdue",
     "assignedTo": "user-1760023018069",
     "assignedToName": "usama ",
     "createdBy": "3",
@@ -2559,6 +2639,2246 @@
     ],
     "fineApplied": false,
     "createdAt": "2025-10-12T08:52:56.939Z",
-    "updatedAt": "2025-10-12T08:52:56.939Z"
+    "updatedAt": "2025-10-12T08:57:00.278Z"
+  },
+  {
+    "id": "51",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420305-1",
+        "taskId": "51",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.306Z"
+      },
+      {
+        "id": "1760259420306-2",
+        "taskId": "51",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.306Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.306Z",
+    "updatedAt": "2025-10-12T08:57:00.306Z"
+  },
+  {
+    "id": "52",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420307-1",
+        "taskId": "52",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.307Z"
+      },
+      {
+        "id": "1760259420307-2",
+        "taskId": "52",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.307Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.307Z",
+    "updatedAt": "2025-10-12T08:57:00.307Z"
+  },
+  {
+    "id": "53",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420309-1",
+        "taskId": "53",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.309Z"
+      },
+      {
+        "id": "1760259420309-2",
+        "taskId": "53",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.309Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.309Z",
+    "updatedAt": "2025-10-12T08:57:00.309Z"
+  },
+  {
+    "id": "54",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420329-1",
+        "taskId": "54",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.329Z"
+      },
+      {
+        "id": "1760259420329-2",
+        "taskId": "54",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.329Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.329Z",
+    "updatedAt": "2025-10-12T08:57:00.329Z"
+  },
+  {
+    "id": "55",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420331-1",
+        "taskId": "55",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.331Z"
+      },
+      {
+        "id": "1760259420331-2",
+        "taskId": "55",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.331Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.331Z",
+    "updatedAt": "2025-10-12T08:57:00.331Z"
+  },
+  {
+    "id": "56",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420334-1",
+        "taskId": "56",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.334Z"
+      },
+      {
+        "id": "1760259420334-2",
+        "taskId": "56",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.334Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.334Z",
+    "updatedAt": "2025-10-12T08:57:00.334Z"
+  },
+  {
+    "id": "57",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420337-1",
+        "taskId": "57",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.337Z"
+      },
+      {
+        "id": "1760259420337-2",
+        "taskId": "57",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.337Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.337Z",
+    "updatedAt": "2025-10-12T08:57:00.337Z"
+  },
+  {
+    "id": "58",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420339-1",
+        "taskId": "58",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.339Z"
+      },
+      {
+        "id": "1760259420339-2",
+        "taskId": "58",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.339Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.339Z",
+    "updatedAt": "2025-10-12T08:57:00.339Z"
+  },
+  {
+    "id": "59",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420343-1",
+        "taskId": "59",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.343Z"
+      },
+      {
+        "id": "1760259420343-2",
+        "taskId": "59",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.343Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.343Z",
+    "updatedAt": "2025-10-12T08:57:00.343Z"
+  },
+  {
+    "id": "60",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420345-1",
+        "taskId": "60",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.345Z"
+      },
+      {
+        "id": "1760259420345-2",
+        "taskId": "60",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.345Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.345Z",
+    "updatedAt": "2025-10-12T08:57:00.345Z"
+  },
+  {
+    "id": "61",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420347-1",
+        "taskId": "61",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.347Z"
+      },
+      {
+        "id": "1760259420347-2",
+        "taskId": "61",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.347Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.347Z",
+    "updatedAt": "2025-10-12T08:57:00.347Z"
+  },
+  {
+    "id": "62",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420350-1",
+        "taskId": "62",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.350Z"
+      },
+      {
+        "id": "1760259420350-2",
+        "taskId": "62",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.350Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.350Z",
+    "updatedAt": "2025-10-12T08:57:00.350Z"
+  },
+  {
+    "id": "63",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420353-1",
+        "taskId": "63",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.353Z"
+      },
+      {
+        "id": "1760259420353-2",
+        "taskId": "63",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.353Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.353Z",
+    "updatedAt": "2025-10-12T08:57:00.353Z"
+  },
+  {
+    "id": "64",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420355-1",
+        "taskId": "64",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.355Z"
+      },
+      {
+        "id": "1760259420355-2",
+        "taskId": "64",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.355Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.355Z",
+    "updatedAt": "2025-10-12T08:57:00.355Z"
+  },
+  {
+    "id": "65",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420358-1",
+        "taskId": "65",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.358Z"
+      },
+      {
+        "id": "1760259420358-2",
+        "taskId": "65",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.358Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.358Z",
+    "updatedAt": "2025-10-12T08:57:00.358Z"
+  },
+  {
+    "id": "66",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420361-1",
+        "taskId": "66",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.361Z"
+      },
+      {
+        "id": "1760259420361-2",
+        "taskId": "66",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.361Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.361Z",
+    "updatedAt": "2025-10-12T08:57:00.361Z"
+  },
+  {
+    "id": "67",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420363-1",
+        "taskId": "67",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.363Z"
+      },
+      {
+        "id": "1760259420363-2",
+        "taskId": "67",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.363Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.363Z",
+    "updatedAt": "2025-10-12T08:57:00.363Z"
+  },
+  {
+    "id": "68",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420366-1",
+        "taskId": "68",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.366Z"
+      },
+      {
+        "id": "1760259420366-2",
+        "taskId": "68",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.366Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.366Z",
+    "updatedAt": "2025-10-12T08:57:00.366Z"
+  },
+  {
+    "id": "69",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420368-1",
+        "taskId": "69",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.368Z"
+      },
+      {
+        "id": "1760259420368-2",
+        "taskId": "69",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.368Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.368Z",
+    "updatedAt": "2025-10-12T08:57:00.368Z"
+  },
+  {
+    "id": "70",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420371-1",
+        "taskId": "70",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.371Z"
+      },
+      {
+        "id": "1760259420371-2",
+        "taskId": "70",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.371Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.371Z",
+    "updatedAt": "2025-10-12T08:57:00.371Z"
+  },
+  {
+    "id": "71",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420373-1",
+        "taskId": "71",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.373Z"
+      },
+      {
+        "id": "1760259420373-2",
+        "taskId": "71",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.373Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.373Z",
+    "updatedAt": "2025-10-12T08:57:00.373Z"
+  },
+  {
+    "id": "72",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420376-1",
+        "taskId": "72",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.376Z"
+      },
+      {
+        "id": "1760259420376-2",
+        "taskId": "72",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.376Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.376Z",
+    "updatedAt": "2025-10-12T08:57:00.376Z"
+  },
+  {
+    "id": "73",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420380-1",
+        "taskId": "73",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.380Z"
+      },
+      {
+        "id": "1760259420380-2",
+        "taskId": "73",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.380Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.380Z",
+    "updatedAt": "2025-10-12T08:57:00.380Z"
+  },
+  {
+    "id": "74",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420382-1",
+        "taskId": "74",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.382Z"
+      },
+      {
+        "id": "1760259420382-2",
+        "taskId": "74",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.382Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.382Z",
+    "updatedAt": "2025-10-12T08:57:00.382Z"
+  },
+  {
+    "id": "75",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420385-1",
+        "taskId": "75",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.385Z"
+      },
+      {
+        "id": "1760259420385-2",
+        "taskId": "75",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.385Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.385Z",
+    "updatedAt": "2025-10-12T08:57:00.385Z"
+  },
+  {
+    "id": "76",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420387-1",
+        "taskId": "76",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.387Z"
+      },
+      {
+        "id": "1760259420387-2",
+        "taskId": "76",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.387Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.387Z",
+    "updatedAt": "2025-10-12T08:57:00.387Z"
+  },
+  {
+    "id": "77",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420389-1",
+        "taskId": "77",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.389Z"
+      },
+      {
+        "id": "1760259420389-2",
+        "taskId": "77",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.389Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.389Z",
+    "updatedAt": "2025-10-12T08:57:00.389Z"
+  },
+  {
+    "id": "78",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420391-1",
+        "taskId": "78",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.391Z"
+      },
+      {
+        "id": "1760259420391-2",
+        "taskId": "78",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.391Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.391Z",
+    "updatedAt": "2025-10-12T08:57:00.391Z"
+  },
+  {
+    "id": "79",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420393-1",
+        "taskId": "79",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.393Z"
+      },
+      {
+        "id": "1760259420393-2",
+        "taskId": "79",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.393Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.393Z",
+    "updatedAt": "2025-10-12T08:57:00.393Z"
+  },
+  {
+    "id": "80",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420396-1",
+        "taskId": "80",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.396Z"
+      },
+      {
+        "id": "1760259420397-2",
+        "taskId": "80",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.397Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.397Z",
+    "updatedAt": "2025-10-12T08:57:00.397Z"
+  },
+  {
+    "id": "81",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420399-1",
+        "taskId": "81",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.399Z"
+      },
+      {
+        "id": "1760259420399-2",
+        "taskId": "81",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.399Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.399Z",
+    "updatedAt": "2025-10-12T08:57:00.399Z"
+  },
+  {
+    "id": "82",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420403-1",
+        "taskId": "82",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.404Z"
+      },
+      {
+        "id": "1760259420404-2",
+        "taskId": "82",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.404Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.404Z",
+    "updatedAt": "2025-10-12T08:57:00.404Z"
+  },
+  {
+    "id": "83",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420406-1",
+        "taskId": "83",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.406Z"
+      },
+      {
+        "id": "1760259420406-2",
+        "taskId": "83",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.406Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.406Z",
+    "updatedAt": "2025-10-12T08:57:00.406Z"
+  },
+  {
+    "id": "84",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420409-1",
+        "taskId": "84",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.409Z"
+      },
+      {
+        "id": "1760259420409-2",
+        "taskId": "84",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.409Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.409Z",
+    "updatedAt": "2025-10-12T08:57:00.409Z"
+  },
+  {
+    "id": "85",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420412-1",
+        "taskId": "85",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.412Z"
+      },
+      {
+        "id": "1760259420412-2",
+        "taskId": "85",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.412Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.412Z",
+    "updatedAt": "2025-10-12T08:57:00.412Z"
+  },
+  {
+    "id": "86",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420414-1",
+        "taskId": "86",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.414Z"
+      },
+      {
+        "id": "1760259420414-2",
+        "taskId": "86",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.414Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.414Z",
+    "updatedAt": "2025-10-12T08:57:00.414Z"
+  },
+  {
+    "id": "87",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420418-1",
+        "taskId": "87",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.418Z"
+      },
+      {
+        "id": "1760259420418-2",
+        "taskId": "87",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.418Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.418Z",
+    "updatedAt": "2025-10-12T08:57:00.418Z"
+  },
+  {
+    "id": "88",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420490-1",
+        "taskId": "88",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.490Z"
+      },
+      {
+        "id": "1760259420490-2",
+        "taskId": "88",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.490Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.490Z",
+    "updatedAt": "2025-10-12T08:57:00.490Z"
+  },
+  {
+    "id": "89",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420493-1",
+        "taskId": "89",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.493Z"
+      },
+      {
+        "id": "1760259420493-2",
+        "taskId": "89",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.493Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.493Z",
+    "updatedAt": "2025-10-12T08:57:00.493Z"
+  },
+  {
+    "id": "90",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420496-1",
+        "taskId": "90",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.496Z"
+      },
+      {
+        "id": "1760259420496-2",
+        "taskId": "90",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.496Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.496Z",
+    "updatedAt": "2025-10-12T08:57:00.496Z"
+  },
+  {
+    "id": "91",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420499-1",
+        "taskId": "91",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.499Z"
+      },
+      {
+        "id": "1760259420499-2",
+        "taskId": "91",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.499Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.499Z",
+    "updatedAt": "2025-10-12T08:57:00.499Z"
+  },
+  {
+    "id": "92",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420516-1",
+        "taskId": "92",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.516Z"
+      },
+      {
+        "id": "1760259420516-2",
+        "taskId": "92",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.516Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.516Z",
+    "updatedAt": "2025-10-12T08:57:00.516Z"
+  },
+  {
+    "id": "93",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420528-1",
+        "taskId": "93",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.528Z"
+      },
+      {
+        "id": "1760259420529-2",
+        "taskId": "93",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.529Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.529Z",
+    "updatedAt": "2025-10-12T08:57:00.529Z"
+  },
+  {
+    "id": "94",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420531-1",
+        "taskId": "94",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.531Z"
+      },
+      {
+        "id": "1760259420531-2",
+        "taskId": "94",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.531Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.531Z",
+    "updatedAt": "2025-10-12T08:57:00.531Z"
+  },
+  {
+    "id": "95",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420534-1",
+        "taskId": "95",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.534Z"
+      },
+      {
+        "id": "1760259420534-2",
+        "taskId": "95",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.534Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.534Z",
+    "updatedAt": "2025-10-12T08:57:00.534Z"
+  },
+  {
+    "id": "96",
+    "title": "Clean Washroom - Hourly",
+    "description": "Clean all washrooms thoroughly including floors, sinks, and toilets",
+    "department": "Cleaning",
+    "priority": "High",
+    "status": "Assigned",
+    "assignedTo": "staff-1",
+    "assignedToName": "Mike Johnson",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-09T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00",
+      "endDate": "2026-10-09T15:34:15.402Z"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420537-1",
+        "taskId": "96",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.537Z"
+      },
+      {
+        "id": "1760259420537-2",
+        "taskId": "96",
+        "action": "assigned",
+        "description": "Task assigned to Mike Johnson",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "Mike Johnson",
+        "createdAt": "2025-10-12T08:57:00.537Z"
+      }
+    ],
+    "fineAmount": 50,
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.537Z",
+    "updatedAt": "2025-10-12T08:57:00.537Z"
+  },
+  {
+    "id": "97",
+    "title": "demo",
+    "description": "demo",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760016739510",
+    "assignedToName": "asim khan ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420540-1",
+        "taskId": "97",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.540Z"
+      },
+      {
+        "id": "1760259420540-2",
+        "taskId": "97",
+        "action": "assigned",
+        "description": "Task assigned to asim khan ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "asim khan ",
+        "createdAt": "2025-10-12T08:57:00.540Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.540Z",
+    "updatedAt": "2025-10-12T08:57:00.540Z"
+  },
+  {
+    "id": "98",
+    "title": "Mjjjhh",
+    "description": "mmmjjjj",
+    "department": "Cleaning",
+    "priority": "Medium",
+    "status": "Assigned",
+    "assignedTo": "user-1760023018069",
+    "assignedToName": "usama ",
+    "createdBy": "3",
+    "createdByName": "Admin User",
+    "branchId": "1",
+    "dueDate": "2025-10-11T05:00:00.000Z",
+    "isRecurring": true,
+    "recurringPattern": {
+      "type": "hourly",
+      "interval": 1,
+      "timeOfDay": "10:00"
+    },
+    "attachments": [],
+    "comments": [],
+    "history": [
+      {
+        "id": "1760259420616-1",
+        "taskId": "98",
+        "action": "created",
+        "description": "Task created",
+        "userId": "3",
+        "userName": "Admin User",
+        "createdAt": "2025-10-12T08:57:00.616Z"
+      },
+      {
+        "id": "1760259420616-2",
+        "taskId": "98",
+        "action": "assigned",
+        "description": "Task assigned to usama ",
+        "userId": "3",
+        "userName": "Admin User",
+        "newValue": "usama ",
+        "createdAt": "2025-10-12T08:57:00.616Z"
+      }
+    ],
+    "fineApplied": false,
+    "createdAt": "2025-10-12T08:57:00.616Z",
+    "updatedAt": "2025-10-12T08:57:00.616Z"
   }
 ]
