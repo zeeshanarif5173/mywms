@@ -4,8 +4,6 @@ import { useSession, signOut } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import {
-  HomeIcon,
-  ChartBarIcon,
   UserGroupIcon,
   ExclamationTriangleIcon,
   BuildingOfficeIcon,
@@ -37,18 +35,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   const navigation = [
-    {
-      name: 'Admin Portal',
-      href: '/admin/dashboard',
-      icon: HomeIcon,
-      current: pathname === '/admin/dashboard'
-    },
-    {
-      name: 'Analytics',
-      href: '/admin/analytics',
-      icon: ChartBarIcon,
-      current: pathname === '/admin/analytics'
-    },
     {
       name: 'Branches',
       href: '/admin/branches',
