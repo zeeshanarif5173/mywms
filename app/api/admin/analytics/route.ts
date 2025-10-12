@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
 
     // Get all data from database
     const [customers, timeEntries, bookings] = await Promise.all([
-      prisma.user.findMany(),
+      prisma.customer.findMany(),
       prisma.timeEntry.findMany(),
       prisma.booking.findMany()
     ])

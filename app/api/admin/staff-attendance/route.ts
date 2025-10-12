@@ -25,12 +25,13 @@ export async function GET(request: NextRequest) {
     const staffId = searchParams.get('staffId')
     const branchId = searchParams.get('branchId')
 
-    // Get all staff users from database
-    const staffUsers = await prisma.user.findMany({
+    // Get all staff users from database (using Customer model for business users)
+    const staffUsers = await prisma.customer.findMany({
       where: {
-        role: {
-          in: ['STAFF', 'TEAM_LEAD']
-        }
+        OR: [
+          { remarks: { contains: 'STAFF' } },
+          { remarks: { contains: 'TEAM_LEAD' } }
+        ]
       },
       include: {
         branch: {
@@ -46,7 +47,7 @@ export async function GET(request: NextRequest) {
     const staffAttendanceData = await Promise.all(staffUsers.map(async (staff) => {
       // Get time entries for this staff member
       const whereClause: any = {
-        userId: staff.id
+        customerId: staff.id
       }
 
       if (startDate && endDate) {
@@ -80,7 +81,7 @@ export async function GET(request: NextRequest) {
           id: staff.id,
           name: staff.name,
           email: staff.email,
-          role: staff.role,
+          role: staff.remarks?.includes('STAFF') ? 'STAFF' : 'TEAM_LEAD',
           branchId: staff.branchId,
           accountStatus: staff.accountStatus,
           branch: staff.branch

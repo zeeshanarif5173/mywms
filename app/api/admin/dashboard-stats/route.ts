@@ -21,9 +21,9 @@ export async function GET(request: NextRequest) {
 
     // Get real data from database
     const [totalUsers, activeUsers, lockedUsers, timeEntries] = await Promise.all([
-      prisma.user.count(),
-      prisma.user.count({ where: { accountStatus: 'Active' } }),
-      prisma.user.count({ where: { accountStatus: 'Locked' } }),
+      prisma.customer.count(),
+      prisma.customer.count({ where: { accountStatus: 'Active' } }),
+      prisma.customer.count({ where: { accountStatus: 'Locked' } }),
       prisma.timeEntry.findMany()
     ])
 
