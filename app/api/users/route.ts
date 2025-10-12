@@ -48,6 +48,17 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('POST /api/users - Starting user creation')
+    
+    // Check if Prisma client is properly initialized
+    if (!prisma || typeof prisma.customer === 'undefined') {
+      console.error('Prisma client not properly initialized:', prisma)
+      return NextResponse.json(
+        { error: 'Database client not initialized. Please try again.' },
+        { status: 500 }
+      )
+    }
+    
     const session = await getServerSession(authOptions)
 
     if (!session) {
@@ -108,8 +119,11 @@ export async function POST(request: NextRequest) {
       ])
     } catch (error) {
       console.error('Error checking existing users:', error)
+      console.error('Error type:', typeof error)
+      console.error('Error message:', error?.message)
+      console.error('Error stack:', error?.stack)
       return NextResponse.json(
-        { error: 'Database connection error. Please try again.' },
+        { error: `Database connection error: ${error?.message || 'Unknown error'}` },
         { status: 500 }
       )
     }
@@ -133,8 +147,11 @@ export async function POST(request: NextRequest) {
       })
     } catch (error) {
       console.error('Error checking branch:', error)
+      console.error('Error type:', typeof error)
+      console.error('Error message:', error?.message)
+      console.error('Error stack:', error?.stack)
       return NextResponse.json(
-        { error: 'Database connection error. Please try again.' },
+        { error: `Database connection error: ${error?.message || 'Unknown error'}` },
         { status: 500 }
       )
     }
