@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
+import { prisma } from '@/lib/prisma'
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
@@ -23,20 +24,30 @@ export async function GET(
 
     const userId = params.id
 
-    // In a real system, you would fetch from database
-    // For now, return a mock user
-    const user = {
-      id: userId,
-      name: 'Mock User',
-      email: 'mock@example.com',
-      role: 'CUSTOMER',
-      branchId: '1',
-      accountStatus: 'Active',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+    // Fetch user from database
+    const user = await prisma.user.findUnique({
+      where: { id: parseInt(userId) },
+      include: {
+        branch: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      }
+    })
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      )
     }
 
-    return NextResponse.json(user)
+    // Remove password from response for security
+    const { password: _, ...userResponse } = user
+
+    return NextResponse.json(userResponse)
 
   } catch (error) {
     console.error('Error fetching user:', error)
@@ -66,17 +77,36 @@ export async function PUT(
     const userId = params.id
     const body = await request.json()
 
-    // Create updated user object
-    const updatedUser = {
-      id: userId,
-      ...body,
-      updatedAt: new Date().toISOString()
+    // Check if user exists
+    const existingUser = await prisma.user.findUnique({
+      where: { id: parseInt(userId) }
+    })
+
+    if (!existingUser) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      )
     }
 
-    // In a real system, you would update the database here
-    console.log('User updated:', updatedUser)
+    // Update user in database
+    const updatedUser = await prisma.user.update({
+      where: { id: parseInt(userId) },
+      data: body,
+      include: {
+        branch: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      }
+    })
 
-    return NextResponse.json(updatedUser, { status: 200 })
+    // Remove password from response for security
+    const { password: _, ...userResponse } = updatedUser
+
+    return NextResponse.json(userResponse, { status: 200 })
 
   } catch (error) {
     console.error('Error updating user:', error)
@@ -105,8 +135,22 @@ export async function DELETE(
 
     const userId = params.id
 
-    // In a real system, you would delete from database here
-    console.log('User deleted:', userId)
+    // Check if user exists
+    const existingUser = await prisma.user.findUnique({
+      where: { id: parseInt(userId) }
+    })
+
+    if (!existingUser) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      )
+    }
+
+    // Delete user from database
+    await prisma.user.delete({
+      where: { id: parseInt(userId) }
+    })
 
     return NextResponse.json(
       { message: 'User deleted successfully' },

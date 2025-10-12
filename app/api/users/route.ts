@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
+import { prisma } from '@/lib/prisma'
+import bcrypt from 'bcryptjs'
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
@@ -18,9 +20,22 @@ export async function GET() {
       return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 })
     }
 
-    // For now, return empty array since we're using mock data
-    // In a real system, you would fetch from database
-    return NextResponse.json([])
+    // Fetch users from database
+    const users = await prisma.user.findMany({
+      include: {
+        branch: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+
+    return NextResponse.json(users)
 
   } catch (error) {
     console.error('Error fetching users:', error)
@@ -84,29 +99,50 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create new user object
-    const newUser = {
-      id: Date.now().toString(),
-      name,
-      email,
-      password, // In a real system, this would be hashed
-      phone: phone || '',
-      role,
-      branchId: branchId || '1',
-      accountStatus: accountStatus || 'Active',
-      companyName: companyName || '',
-      packageId: packageId || '',
-      gatePassId: gatePassId || '',
-      remarks: remarks || '',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+    // Check if user already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    })
+
+    if (existingUser) {
+      return NextResponse.json(
+        { error: 'User with this email already exists' },
+        { status: 400 }
+      )
     }
 
-    // In a real system, you would save to database here
-    // For now, we'll just return the created user
-    console.log('New user created:', newUser)
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 12)
 
-    return NextResponse.json(newUser, { status: 201 })
+    // Create new user in database
+    const newUser = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        phone: phone || '',
+        role,
+        branchId: parseInt(branchId) || 1,
+        accountStatus: accountStatus || 'Active',
+        companyName: companyName || '',
+        packageId: packageId || '',
+        gatePassId: gatePassId || '',
+        remarks: remarks || ''
+      },
+      include: {
+        branch: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      }
+    })
+
+    // Remove password from response for security
+    const { password: _, ...userResponse } = newUser
+
+    return NextResponse.json(userResponse, { status: 201 })
 
   } catch (error) {
     console.error('Error creating user:', error)
@@ -171,27 +207,55 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    // Create updated user object
-    const updatedUser = {
-      id,
+    // Check if user exists
+    const existingUser = await prisma.user.findUnique({
+      where: { id: parseInt(id) }
+    })
+
+    if (!existingUser) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      )
+    }
+
+    // Prepare update data
+    const updateData: any = {
       name,
       email,
-      password: password || undefined, // Only include if provided
       phone: phone || '',
       role,
-      branchId: branchId || '1',
+      branchId: parseInt(branchId) || 1,
       accountStatus: accountStatus || 'Active',
       companyName: companyName || '',
       packageId: packageId || '',
       gatePassId: gatePassId || '',
-      remarks: remarks || '',
-      updatedAt: new Date().toISOString()
+      remarks: remarks || ''
     }
 
-    // In a real system, you would update the database here
-    console.log('User updated:', updatedUser)
+    // Only update password if provided
+    if (password) {
+      updateData.password = await bcrypt.hash(password, 12)
+    }
 
-    return NextResponse.json(updatedUser, { status: 200 })
+    // Update user in database
+    const updatedUser = await prisma.user.update({
+      where: { id: parseInt(id) },
+      data: updateData,
+      include: {
+        branch: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      }
+    })
+
+    // Remove password from response for security
+    const { password: _, ...userResponse } = updatedUser
+
+    return NextResponse.json(userResponse, { status: 200 })
 
   } catch (error) {
     console.error('Error updating user:', error)
