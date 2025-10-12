@@ -239,6 +239,7 @@ export default function AdminUsers() {
     try {
       if (showAddModal) {
         // Add new user via API
+        console.log('Sending form data:', formData)
         const response = await fetch('/api/users', {
           method: 'POST',
           headers: {
@@ -256,6 +257,7 @@ export default function AdminUsers() {
           alert('User created successfully!')
         } else {
           const error = await response.json()
+          console.error('User creation failed:', response.status, error)
           alert(`Error: ${error.error || 'Failed to create user'}`)
         }
       } else if (showEditModal && editingUser) {
