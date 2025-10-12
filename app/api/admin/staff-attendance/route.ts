@@ -51,9 +51,10 @@ export async function GET(request: NextRequest) {
       }
 
       if (startDate && endDate) {
+        // Since date is stored as string in YYYY-MM-DD format, we can use string comparison
         whereClause.date = {
-          gte: new Date(startDate),
-          lte: new Date(endDate)
+          gte: startDate,
+          lte: endDate
         }
       }
 
@@ -66,7 +67,7 @@ export async function GET(request: NextRequest) {
 
       // Calculate stats
       const totalHours = timeEntries.reduce((sum, entry) => sum + (entry.duration || 0), 0) / 60
-      const totalDays = new Set(timeEntries.map(entry => entry.date.toISOString().split('T')[0])).size
+      const totalDays = new Set(timeEntries.map(entry => entry.date)).size
       const currentEntry = timeEntries.find(entry => !entry.checkOutTime)
       const currentStatus = currentEntry ? 'Checked In' : 'Checked Out'
       
