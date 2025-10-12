@@ -99,14 +99,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if user already exists
-    const existingUser = await prisma.customer.findUnique({
-      where: { email }
-    })
+    // Check if user already exists (both in Customer and User models)
+    const [existingCustomer, existingUser] = await Promise.all([
+      prisma.customer.findUnique({ where: { email } }),
+      prisma.user.findUnique({ where: { email } })
+    ])
 
-    if (existingUser) {
+    if (existingCustomer || existingUser) {
       return NextResponse.json(
-        { error: 'User with this email already exists' },
+        { error: 'This email is already registered in the system. Please use a different email or update the existing user.' },
         { status: 400 }
       )
     }
@@ -209,6 +210,21 @@ export async function PUT(request: NextRequest) {
         { error: 'User not found' },
         { status: 404 }
       )
+    }
+
+    // Check if email is being changed and if new email already exists
+    if (email !== existingUser.email) {
+      const [existingCustomer, existingAuthUser] = await Promise.all([
+        prisma.customer.findUnique({ where: { email } }),
+        prisma.user.findUnique({ where: { email } })
+      ])
+
+      if (existingCustomer || existingAuthUser) {
+        return NextResponse.json(
+          { error: 'This email is already registered in the system. Please use a different email.' },
+          { status: 400 }
+        )
+      }
     }
 
     // Prepare update data

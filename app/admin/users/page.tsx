@@ -101,19 +101,6 @@ export default function AdminUsers() {
           console.error('Users API failed:', response.status, response.statusText)
           const errorText = await response.text()
           console.error('API error details:', errorText)
-          
-          // Try to load from localStorage as fallback
-          try {
-            const localUsers = localStorage.getItem('coworking_portal_additional_users')
-            if (localUsers) {
-              const parsedUsers = JSON.parse(localUsers)
-              console.log('Loaded users from localStorage:', parsedUsers.length)
-              setUsers(parsedUsers)
-              return
-            }
-          } catch (error) {
-            console.error('Error loading from localStorage:', error)
-          }
         }
         
         // Fallback to empty array if all else fails
@@ -262,19 +249,12 @@ export default function AdminUsers() {
           const newUser = await response.json()
           setUsers([...users, newUser])
           
-          // Also save to localStorage as backup
-          try {
-            const existingUsers = JSON.parse(localStorage.getItem('coworking_portal_additional_users') || '[]')
-            const updatedUsers = [...existingUsers, newUser]
-            localStorage.setItem('coworking_portal_additional_users', JSON.stringify(updatedUsers))
-          } catch (error) {
-            console.error('Failed to save to localStorage:', error)
-          }
-          
           setShowAddModal(false)
+          resetForm()
+          alert('User created successfully!')
         } else {
           const error = await response.json()
-          alert(error.error || 'Failed to create user')
+          alert(`Error: ${error.error || 'Failed to create user'}`)
         }
       } else if (showEditModal && editingUser) {
         // Update existing user via API
@@ -291,9 +271,10 @@ export default function AdminUsers() {
           setUsers(users.map(u => u.id === editingUser.id ? updatedUser : u))
           setShowEditModal(false)
           setEditingUser(null)
+          alert('User updated successfully!')
         } else {
           const error = await response.json()
-          alert(error.error || 'Failed to update user')
+          alert(`Error: ${error.error || 'Failed to update user'}`)
         }
       }
     } catch (error) {
