@@ -112,6 +112,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Generate gatePassId if not provided
+    const finalGatePassId = gatePassId || `GP-${Date.now()}`
+    
     // Create new user in database (Customer model doesn't store password)
     const newUser = await prisma.customer.create({
       data: {
@@ -120,8 +123,8 @@ export async function POST(request: NextRequest) {
         phone: phone || '',
         company: companyName || '',
         accountStatus: accountStatus || 'Active',
-        gatePassId: gatePassId || '',
-        packageId: parseInt(packageId) || null,
+        gatePassId: finalGatePassId,
+        packageId: packageId ? parseInt(packageId) : null,
         branchId: parseInt(branchId) || 1,
         remarks: remarks || ''
       },
