@@ -5,9 +5,22 @@ import { prisma } from '@/lib/prisma'
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+export const preferredRegion = 'auto'
 
 export async function GET(request: NextRequest) {
   try {
+    // Prevent execution during build time
+    if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'Service not available during build' }, { status: 503 })
+    }
+
+    // Check if Prisma client is available
+    if (!prisma || typeof prisma.customer === 'undefined') {
+      console.error('Prisma client not available during build')
+      return NextResponse.json({ error: 'Database not available' }, { status: 503 })
+    }
+
     const session = await getServerSession(authOptions)
 
     if (!session) {
