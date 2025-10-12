@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
-import { prisma } from '@/lib/prisma'
+import { getAllTasks, getTasksByBranchId, createTask } from '@/lib/mock-data'
 
 
 // Force dynamic rendering
@@ -21,72 +21,17 @@ export async function GET(request: NextRequest) {
 
     if (session.user.role === 'ADMIN') {
       // Admin can see all tasks
-      tasks = await prisma.task.findMany({
-        include: {
-          assignedToUser: {
-            select: {
-              id: true,
-              name: true,
-              email: true
-            }
-          },
-          createdByUser: {
-            select: {
-              id: true,
-              name: true,
-              email: true
-            }
-          },
-          branch: {
-            select: {
-              id: true,
-              name: true
-            }
-          }
-        },
-        orderBy: {
-          createdAt: 'desc'
-        }
-      })
+      tasks = getAllTasks()
     } else if (session.user.role === 'MANAGER') {
       // Manager can see tasks for their branch
-      tasks = await prisma.task.findMany({
-        where: {
-          branchId: parseInt(session.user.branchId || '1')
-        },
-        include: {
-          assignedToUser: {
-            select: {
-              id: true,
-              name: true,
-              email: true
-            }
-          },
-          createdByUser: {
-            select: {
-              id: true,
-              name: true,
-              email: true
-            }
-          },
-          branch: {
-            select: {
-              id: true,
-              name: true
-            }
-          }
-        },
-        orderBy: {
-          createdAt: 'desc'
-        }
-      })
+      tasks = getTasksByBranchId(session.user.branchId || '1')
     } else {
       return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 })
     }
 
     // Filter by branch if specified
     if (branchId && session.user.role === 'ADMIN') {
-      tasks = tasks.filter(task => task.branchId === parseInt(branchId))
+      tasks = tasks.filter(task => task.branchId === branchId)
     }
 
     return NextResponse.json(tasks, { status: 200 })
@@ -136,47 +81,22 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create the task in database
-    const newTask = await prisma.task.create({
-      data: {
-        title,
-        description,
-        department,
-        priority,
-        createdBy: parseInt(session.user.id),
-        createdByName: session.user.name || 'Admin',
-        branchId: parseInt(branchId),
-        dueDate: new Date(dueDate),
-        assignedTo: assignedTo ? parseInt(assignedTo) : null,
-        assignedToName: assignedToName || null,
-        isRecurring: isRecurring || false,
-        recurringPattern: recurringPattern || null,
-        fineAmount: fineAmount ? parseFloat(fineAmount) : null,
-        status: 'Open'
-      },
-      include: {
-        assignedToUser: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        },
-        createdByUser: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        },
-        branch: {
-          select: {
-            id: true,
-            name: true
-          }
-        }
-      }
-    })
+    // Create the task using mock data
+    const newTask = createTask(
+      title,
+      description,
+      department,
+      priority,
+      session.user.id,
+      session.user.name || 'Admin',
+      branchId,
+      dueDate,
+      assignedTo,
+      assignedToName,
+      isRecurring || false,
+      recurringPattern,
+      fineAmount
+    )
 
     return NextResponse.json(newTask, { status: 201 })
 
