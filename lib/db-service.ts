@@ -5,6 +5,7 @@ import {
   updateMockCustomer,
   getComplaintsByCustomerId as getMockComplaintsByCustomerId,
   createComplaint as createMockComplaint,
+  updateComplaint as updateMockComplaint,
   getTimeEntriesByCustomerId as getMockTimeEntriesByCustomerId,
   getCurrentTimeEntry as getMockCurrentTimeEntry,
   checkIn as mockCheckIn,
@@ -169,6 +170,22 @@ export async function createComplaint(customerId: string, title: string, descrip
     }
   }
   return createMockComplaint(customerId, '1', title, description)
+}
+
+export async function updateComplaint(complaintId: string, updates: any) {
+  if (isDatabaseConnected) {
+    try {
+      const complaint = await prisma.complaint.update({
+        where: { id: parseInt(complaintId) },
+        data: updates
+      })
+      return complaint
+    } catch (error) {
+      console.error('Database error, falling back to mock data:', error)
+      return updateMockComplaint(complaintId, updates)
+    }
+  }
+  return updateMockComplaint(complaintId, updates)
 }
 
 // Time Tracking Service

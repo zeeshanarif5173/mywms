@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
+import { subscribeToComplaints, isSupabaseConfigured } from '@/lib/supabase'
 import { 
   PlusIcon,
   MagnifyingGlassIcon,
@@ -91,8 +92,41 @@ export default function CustomerComplaints() {
     }
   }, [session])
 
+  // Real-time subscription for complaints updates
+  useEffect(() => {
+    if (!session || !isSupabaseConfigured()) return
+
+    const customerId = session?.user?.id || '1'
+    
+    const subscription = subscribeToComplaints(customerId, (payload) => {
+      console.log('Real-time complaint update:', payload)
+      
+      if (payload.eventType === 'INSERT') {
+        // New complaint added
+        setComplaints(prev => [payload.new, ...prev])
+      } else if (payload.eventType === 'UPDATE') {
+        // Complaint updated
+        setComplaints(prev => 
+          prev.map(complaint => 
+            complaint.id === payload.new.id ? payload.new : complaint
+          )
+        )
+      } else if (payload.eventType === 'DELETE') {
+        // Complaint deleted
+        setComplaints(prev => 
+          prev.filter(complaint => complaint.id !== payload.old.id)
+        )
+      }
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [session])
+
   const handleCreateComplaint = async () => {
     try {
+      const customerId = session?.user?.id || '1'
       const response = await fetch('/api/complaints/create', {
         method: 'POST',
         headers: {
@@ -101,6 +135,7 @@ export default function CustomerComplaints() {
         body: JSON.stringify({
           title: formData.title,
           description: formData.description,
+          customerId: customerId,
           photo: formData.photo ? 'base64_encoded_image' : null // In real app, upload to cloud storage
         })
       })
