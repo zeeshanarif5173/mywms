@@ -165,6 +165,7 @@ export interface MockComplaint {
   title: string
   description: string
   status: string
+  remarks?: string
   createdAt: string
   updatedAt: string
   resolvedAt?: string
@@ -701,6 +702,7 @@ const defaultComplaints: MockComplaint[] = [
     title: 'AC not working',
     description: 'The air conditioning in my workspace is not functioning properly',
     status: 'Open',
+    remarks: null,
     createdAt: '2024-01-20T10:00:00Z',
     updatedAt: '2024-01-20T10:00:00Z',
     resolvedAt: undefined,
@@ -713,6 +715,7 @@ const defaultComplaints: MockComplaint[] = [
     title: 'Internet connectivity issues',
     description: 'Frequent disconnections from the WiFi network',
     status: 'In Process',
+    remarks: 'Technician assigned - checking router configuration',
     createdAt: '2024-01-19T14:30:00Z',
     updatedAt: '2024-01-21T09:15:00Z',
     resolvedAt: undefined,
@@ -1342,6 +1345,7 @@ export function createComplaint(customerId: string, branchId: string, title: str
     title,
     description,
     status: 'Open',
+    remarks: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   }

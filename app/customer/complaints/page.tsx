@@ -30,6 +30,7 @@ interface Complaint {
   description: string
   photo?: string
   status: 'Open' | 'In Process' | 'On Hold' | 'Testing' | 'Resolved'
+  remarks?: string
   createdAt: string
   updatedAt: string
   resolvedAt?: string

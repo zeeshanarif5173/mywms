@@ -26,6 +26,7 @@ interface Complaint {
   description: string
   photo?: string
   status: 'Open' | 'In Process' | 'On Hold' | 'Testing' | 'Resolved'
+  remarks?: string
   createdAt: string
   updatedAt: string
   resolvedAt?: string
@@ -36,6 +37,11 @@ interface Complaint {
     submittedAt: string
   }
   resolvingTime?: number
+  customer?: {
+    id: string
+    name: string
+    email: string
+  }
 }
 
 interface Analytics {
@@ -61,6 +67,7 @@ export default function ManagerComplaints() {
   // Form data for updating complaints
   const [updateData, setUpdateData] = useState({
     status: 'Open',
+    remarks: '',
     workCompletionImage: null as File | null
   })
 
@@ -119,15 +126,23 @@ export default function ManagerComplaints() {
     if (!selectedComplaint) return
 
     try {
+      const updatePayload: any = {
+        status: updateData.status,
+        remarks: updateData.remarks,
+        workCompletionImage: updateData.workCompletionImage ? 'base64_encoded_image' : null
+      }
+
+      // If status is being changed to Resolved, set resolvedAt
+      if (updateData.status === 'Resolved' && selectedComplaint.status !== 'Resolved') {
+        updatePayload.resolvedAt = new Date().toISOString()
+      }
+
       const response = await fetch(`/api/complaints/update/${selectedComplaint.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          status: updateData.status,
-          workCompletionImage: updateData.workCompletionImage ? 'base64_encoded_image' : null
-        })
+        body: JSON.stringify(updatePayload)
       })
 
       if (response.ok) {
@@ -161,7 +176,7 @@ export default function ManagerComplaints() {
         
         setShowUpdateModal(false)
         setSelectedComplaint(null)
-        setUpdateData({ status: 'Open', workCompletionImage: null })
+        setUpdateData({ status: 'Open', remarks: '', workCompletionImage: null })
       } else {
         const error = await response.json()
         alert(error.error || 'Failed to update complaint')
@@ -413,7 +428,11 @@ export default function ManagerComplaints() {
                   <button
                     onClick={() => {
                       setSelectedComplaint(complaint)
-                      setUpdateData({ status: complaint.status, workCompletionImage: null })
+                      setUpdateData({ 
+                        status: complaint.status, 
+                        remarks: complaint.remarks || '', 
+                        workCompletionImage: null 
+                      })
                       setShowUpdateModal(true)
                     }}
                     className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
@@ -426,6 +445,12 @@ export default function ManagerComplaints() {
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                 <div>
+                  <p className="text-xs text-gray-500">Customer</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {complaint.customer?.name || `Customer ${complaint.customerId}`}
+                  </p>
+                </div>
+                <div>
                   <p className="text-xs text-gray-500">Created</p>
                   <p className="text-sm font-medium text-gray-900">
                     {new Date(complaint.createdAt).toLocaleDateString()}
@@ -435,12 +460,6 @@ export default function ManagerComplaints() {
                   <p className="text-xs text-gray-500">Last Updated</p>
                   <p className="text-sm font-medium text-gray-900">
                     {new Date(complaint.updatedAt).toLocaleDateString()}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Resolution Time</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    {formatResolvingTime(complaint.resolvingTime)}
                   </p>
                 </div>
                 <div>
@@ -466,6 +485,13 @@ export default function ManagerComplaints() {
                   </div>
                 </div>
               </div>
+
+              {complaint.remarks && (
+                <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <p className="text-xs text-blue-600 font-medium mb-1">Manager Remarks</p>
+                  <p className="text-sm text-blue-800">{complaint.remarks}</p>
+                </div>
+              )}
 
               <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                 <div className="flex items-center space-x-4">
@@ -527,12 +553,12 @@ export default function ManagerComplaints() {
                 <p className="text-sm text-gray-600 mb-4">
                   Update status for "{selectedComplaint.title}"
                 </p>
-                <div>
+                <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
                   <select
                     value={updateData.status}
                     onChange={(e) => setUpdateData(prev => ({ ...prev, status: e.target.value }))}
-                    className="input-field"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="Open">Open</option>
                     <option value="In Process">In Process</option>
@@ -540,6 +566,16 @@ export default function ManagerComplaints() {
                     <option value="Testing">Testing</option>
                     <option value="Resolved">Resolved</option>
                   </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Remarks</label>
+                  <textarea
+                    value={updateData.remarks}
+                    onChange={(e) => setUpdateData(prev => ({ ...prev, remarks: e.target.value }))}
+                    placeholder="Add remarks about the complaint status..."
+                    rows={3}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
                 </div>
               </div>
               

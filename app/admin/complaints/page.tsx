@@ -26,6 +26,7 @@ interface Complaint {
   description: string
   photo?: string
   status: 'Open' | 'In Process' | 'On Hold' | 'Testing' | 'Resolved'
+  remarks?: string
   createdAt: string
   updatedAt: string
   resolvedAt?: string
@@ -36,6 +37,11 @@ interface Complaint {
     submittedAt: string
   }
   resolvingTime?: number
+  customer?: {
+    id: string
+    name: string
+    email: string
+  }
 }
 
 interface Analytics {
@@ -61,6 +67,7 @@ export default function AdminComplaints() {
   // Form data for updating complaints
   const [updateData, setUpdateData] = useState({
     status: 'Open',
+    remarks: '',
     workCompletionImage: null as File | null
   })
 
@@ -119,15 +126,23 @@ export default function AdminComplaints() {
     if (!selectedComplaint) return
 
     try {
+      const updatePayload: any = {
+        status: updateData.status,
+        remarks: updateData.remarks,
+        workCompletionImage: updateData.workCompletionImage ? 'base64_encoded_image' : null
+      }
+
+      // If status is being changed to Resolved, set resolvedAt
+      if (updateData.status === 'Resolved' && selectedComplaint.status !== 'Resolved') {
+        updatePayload.resolvedAt = new Date().toISOString()
+      }
+
       const response = await fetch(`/api/complaints/update/${selectedComplaint.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          status: updateData.status,
-          workCompletionImage: updateData.workCompletionImage ? 'base64_encoded_image' : null
-        })
+        body: JSON.stringify(updatePayload)
       })
 
       if (response.ok) {
@@ -161,7 +176,7 @@ export default function AdminComplaints() {
         
         setShowUpdateModal(false)
         setSelectedComplaint(null)
-        setUpdateData({ status: 'Open', workCompletionImage: null })
+        setUpdateData({ status: 'Open', remarks: '', workCompletionImage: null })
       } else {
         const error = await response.json()
         alert(error.error || 'Failed to update complaint')
@@ -413,7 +428,11 @@ export default function AdminComplaints() {
                   <button
                     onClick={() => {
                       setSelectedComplaint(complaint)
-                      setUpdateData({ status: complaint.status, workCompletionImage: null })
+                      setUpdateData({ 
+                        status: complaint.status, 
+                        remarks: complaint.remarks || '', 
+                        workCompletionImage: null 
+                      })
                       setShowUpdateModal(true)
                     }}
                     className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"

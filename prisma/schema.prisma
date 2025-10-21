@@ -102,6 +102,7 @@ model Complaint {
   title       String
   description String
   status      String    @default("Open")
+  remarks     String?   // Manager/Admin remarks
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   resolvedAt  DateTime?
