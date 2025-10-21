@@ -7,6 +7,10 @@ import {
   createComplaint as createMockComplaint,
   updateComplaint as updateMockComplaint,
   getAllComplaints as getAllMockComplaints,
+  getAllCustomers as getAllMockCustomers,
+  getAllTimeEntries as getAllMockTimeEntries,
+  getAllBookings as getAllMockBookings,
+  getAllTasks as getAllMockTasks,
   getTimeEntriesByCustomerId as getMockTimeEntriesByCustomerId,
   getCurrentTimeEntry as getMockCurrentTimeEntry,
   checkIn as mockCheckIn,
@@ -212,6 +216,97 @@ export async function getAllComplaints() {
     }
   }
   return getAllMockComplaints()
+}
+
+export async function getAllCustomers() {
+  if (isDatabaseConnected) {
+    try {
+      const customers = await prisma.customer.findMany({
+        include: {
+          package: true
+        },
+        orderBy: { createdAt: 'desc' }
+      })
+      return customers
+    } catch (error) {
+      console.error('Database error, falling back to mock data:', error)
+      return getAllMockCustomers()
+    }
+  }
+  return getAllMockCustomers()
+}
+
+export async function getAllTimeEntries() {
+  if (isDatabaseConnected) {
+    try {
+      const timeEntries = await prisma.timeEntry.findMany({
+        include: {
+          customer: {
+            select: {
+              id: true,
+              name: true,
+              email: true
+            }
+          }
+        },
+        orderBy: { checkInTime: 'desc' }
+      })
+      return timeEntries
+    } catch (error) {
+      console.error('Database error, falling back to mock data:', error)
+      return getAllMockTimeEntries()
+    }
+  }
+  return getAllMockTimeEntries()
+}
+
+export async function getAllBookings() {
+  if (isDatabaseConnected) {
+    try {
+      const bookings = await prisma.booking.findMany({
+        include: {
+          customer: {
+            select: {
+              id: true,
+              name: true,
+              email: true
+            }
+          },
+          meetingRoom: true
+        },
+        orderBy: { startTime: 'desc' }
+      })
+      return bookings
+    } catch (error) {
+      console.error('Database error, falling back to mock data:', error)
+      return getAllMockBookings()
+    }
+  }
+  return getAllMockBookings()
+}
+
+export async function getAllTasks() {
+  if (isDatabaseConnected) {
+    try {
+      const tasks = await prisma.task.findMany({
+        include: {
+          assignedTo: {
+            select: {
+              id: true,
+              name: true,
+              email: true
+            }
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      })
+      return tasks
+    } catch (error) {
+      console.error('Database error, falling back to mock data:', error)
+      return getAllMockTasks()
+    }
+  }
+  return getAllMockTasks()
 }
 
 // Time Tracking Service
