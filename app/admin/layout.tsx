@@ -19,7 +19,8 @@ import {
   CalculatorIcon,
   BanknotesIcon,
   ReceiptPercentIcon,
-  TagIcon
+  TagIcon,
+  ChartBarIcon
 } from '@heroicons/react/24/outline'
 
 interface AdminLayoutProps {
@@ -35,6 +36,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   const navigation = [
+    {
+      name: 'Dashboard',
+      href: '/admin/dashboard',
+      icon: ChartBarIcon,
+      current: pathname === '/admin/dashboard'
+    },
     {
       name: 'Branches',
       href: '/admin/branches',

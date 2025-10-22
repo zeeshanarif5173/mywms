@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { 
-  getAllComplaints, 
-  getAllCustomers, 
-  getAllTimeEntries, 
-  getAllBookings,
-  getAllTasks 
-} from '@/lib/db-service'
+import { getPersistentUsers } from '@/lib/persistent-storage'
+import { getPersistentTasks } from '@/lib/persistent-tasks'
+import { getPersistentComplaints } from '@/lib/persistent-complaints'
+import { getPersistentBookings } from '@/lib/persistent-bookings'
 
 // Force dynamic rendering and prevent static generation
 export const dynamic = 'force-dynamic'
@@ -15,20 +12,18 @@ export const revalidate = 0
 
 export async function GET(request: NextRequest) {
   try {
-    // Fetch all data in parallel for better performance
+    // Fetch all data from persistent storage
     const [
       complaints,
       customers,
-      timeEntries,
       bookings,
       tasks
-    ] = await Promise.all([
-      getAllComplaints(),
-      getAllCustomers(),
-      getAllTimeEntries(),
-      getAllBookings(),
-      getAllTasks()
-    ])
+    ] = [
+      getPersistentComplaints(),
+      getPersistentUsers(),
+      getPersistentBookings(),
+      getPersistentTasks()
+    ]
 
     // Calculate statistics
     const totalCustomers = customers.length
@@ -47,22 +42,11 @@ export async function GET(request: NextRequest) {
     const totalBookings = bookings.length
     const activeBookings = bookings.filter(b => new Date(b.endTime) > new Date()).length
     
-    const totalTimeEntries = timeEntries.length
-    const totalHours = timeEntries.reduce((sum, entry) => {
-      if (entry.checkOutTime) {
-        const duration = new Date(entry.checkOutTime).getTime() - new Date(entry.checkInTime).getTime()
-        return sum + (duration / (1000 * 60 * 60)) // Convert to hours
-      }
-      return sum
-    }, 0)
+    const totalTimeEntries = 0 // TODO: Add time tracking persistent storage
+    const totalHours = 0 // TODO: Add time tracking persistent storage
 
-    // Calculate revenue (assuming average package price)
-    const totalRevenue = customers.reduce((sum, customer) => {
-      if (customer.package) {
-        return sum + customer.package.price
-      }
-      return sum
-    }, 0)
+    // Calculate revenue (simplified for now)
+    const totalRevenue = 0 // TODO: Add revenue calculation
 
     // Recent activity (last 5 complaints)
     const recentComplaints = complaints
@@ -72,33 +56,19 @@ export async function GET(request: NextRequest) {
         id: complaint.id,
         type: 'complaint',
         title: complaint.title,
-        customer: complaint.customer?.name || `Customer ${complaint.customerId}`,
+        customer: `Customer ${complaint.customerId}`,
         status: complaint.status,
         createdAt: complaint.createdAt
       }))
 
-    // Top customers by time spent
-    const customerTimeMap = new Map()
-    timeEntries.forEach(entry => {
-      if (entry.checkOutTime) {
-        const duration = new Date(entry.checkOutTime).getTime() - new Date(entry.checkInTime).getTime()
-        const hours = duration / (1000 * 60 * 60)
-        const customerId = entry.customerId
-        customerTimeMap.set(customerId, (customerTimeMap.get(customerId) || 0) + hours)
-      }
-    })
-
-    const topCustomers = Array.from(customerTimeMap.entries())
-      .map(([customerId, hours]) => {
-        const customer = customers.find(c => c.id.toString() === customerId)
-        return {
-          id: customerId,
-          name: customer?.name || `Customer ${customerId}`,
-          hours: Math.round(hours * 10) / 10
-        }
-      })
-      .sort((a, b) => b.hours - a.hours)
+    // Top customers (simplified for now)
+    const topCustomers = customers
       .slice(0, 5)
+      .map(customer => ({
+        id: customer.id,
+        name: customer.name,
+        hours: 0 // TODO: Add actual time tracking
+      }))
 
     return NextResponse.json({
       // User Statistics
