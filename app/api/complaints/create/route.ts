@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createComplaint } from '@/lib/db-service'
+import { getPersistentComplaints, savePersistentComplaints } from '@/lib/persistent-complaints'
 
 // Force dynamic rendering and prevent static generation
 export const dynamic = 'force-dynamic'
@@ -10,16 +10,34 @@ export const revalidate = 0
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { title, description, customerId } = body
+    const { title, description, customerId, imageUrl } = body
 
     if (!title || !description) {
       return NextResponse.json({ error: 'Title and description are required' }, { status: 400 })
     }
 
-    // Use customerId from body or default to '1' for testing
-    const complaint = await createComplaint(customerId || '1', title, description)
+    // Get existing complaints from persistent storage
+    const existingComplaints = getPersistentComplaints()
     
-    return NextResponse.json(complaint)
+    // Create new complaint
+    const newComplaint = {
+      id: `complaint-${Date.now()}`,
+      customerId: customerId || '1',
+      title,
+      description,
+      status: 'Open',
+      remarks: null,
+      imageUrl: imageUrl || null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      resolvedAt: null
+    }
+
+    // Add to persistent storage
+    const updatedComplaints = [...existingComplaints, newComplaint]
+    savePersistentComplaints(updatedComplaints)
+    
+    return NextResponse.json(newComplaint, { status: 201 })
   } catch (error) {
     console.error('Error creating complaint:', error)
     return NextResponse.json({ error: 'Failed to create complaint' }, { status: 500 })

@@ -31,10 +31,10 @@ Password: admin123
 
 ### **Staff Login**
 ```
-Email: usama@cmp.com
+Email: staff@example.com
 Password: staff123
 ```
-**User:** Usama  
+**User:** Staff User  
 **Role:** STAFF  
 **Features:** Time Tracking, Profile Management, Notifications, Staff Dashboard
 
@@ -76,7 +76,7 @@ Password: staff123
 - ✅ **All Manager Features** - Full access to all management functions
 - ✅ **All Customer Features** - Full access to all customer functions
 
-### **Staff Features (usama@cmp.com)**
+### **Staff Features (staff@example.com)**
 - ✅ **Time Tracking** - Clock in/out functionality and working hours tracking
 - ✅ **Profile Management** - Update personal information and account settings
 - ✅ **Notifications** - View system notifications and updates
@@ -154,7 +154,7 @@ Your complete coworking portal is ready with real authentication:
 **Test Credentials:**
 - **Customer:** customer@example.com / customer123
 - **Manager:** manager@example.com / manager123  
-- **Staff:** usama@cmp.com / staff123
+- **Staff:** staff@example.com / staff123
 - **Admin:** admin@example.com / admin123
 
 All features are working with proper role-based access! 🚀

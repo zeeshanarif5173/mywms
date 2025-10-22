@@ -44,6 +44,17 @@ Password: password123
 - ✅ System Monitoring
 - ✅ Full System Access
 
+### **Staff Login**
+```
+Email: staff@example.com
+Password: staff123
+```
+**Features Available:**
+- ✅ Time Tracking
+- ✅ Profile Management
+- ✅ Notifications
+- ✅ Staff Dashboard
+
 ## 🚀 **Alternative Access Methods**
 
 ### **Method 1: Direct Access (Easiest)**

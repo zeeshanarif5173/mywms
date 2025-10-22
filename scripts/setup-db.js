@@ -11,6 +11,23 @@ const prisma = new PrismaClient({
 async function main() {
   console.log('🌱 Setting up database with sample data...')
 
+  // Create default branch first
+  const defaultBranch = await prisma.branch.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      name: 'Main Branch',
+      address: '123 Business Street',
+      city: 'Business City',
+      state: 'BC',
+      zipCode: '12345',
+      phone: '+1-555-0000',
+      email: 'main@coworking.com',
+      isActive: true
+    }
+  })
+
   // Create sample packages
   const basicPackage = await prisma.package.upsert({
     where: { id: 1 },
@@ -66,6 +83,7 @@ async function main() {
       company: 'TechCorp',
       gatePassId: 'GP-001',
       packageId: 1,
+      branchId: 1,
       accountStatus: 'Active',
       remarks: 'VIP member, premium package'
     }
@@ -82,6 +100,7 @@ async function main() {
       company: 'StartupXYZ',
       gatePassId: 'GP-002',
       packageId: 2,
+      branchId: 1,
       accountStatus: 'Active',
       remarks: 'Regular member'
     }
@@ -98,6 +117,7 @@ async function main() {
       company: 'Freelance Solutions',
       gatePassId: 'GP-003',
       packageId: 1,
+      branchId: 1,
       accountStatus: 'Locked',
       remarks: 'Payment overdue'
     }

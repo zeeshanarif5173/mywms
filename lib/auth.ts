@@ -40,10 +40,10 @@ export const authOptions = {
             branchId: '1' // Downtown Branch (admin can access all)
           },
           {
-            email: 'usama@cmp.com',
+            email: 'staff@example.com',
             password: 'staff123',
             id: '4',
-            name: 'Usama',
+            name: 'Staff User',
             role: 'STAFF',
             branchId: '1' // Downtown Branch
           }
