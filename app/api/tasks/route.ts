@@ -11,6 +11,10 @@ export async function GET(request: NextRequest) {
   try {
     const tasks = getPersistentTasks()
     return NextResponse.json(tasks)
+  } catch (error) {
+    console.error('Error fetching tasks:', error)
+    return NextResponse.json({ error: 'Failed to fetch tasks' }, { status: 500 })
+  }
 }
 
 export async function POST(request: NextRequest) {
