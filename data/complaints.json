@@ -1,0 +1,38 @@
+[
+  {
+    "id": "complaint-1761097996702",
+    "customerId": "1",
+    "title": "Internet Connection Issues",
+    "description": "The WiFi is very slow in the main area",
+    "status": "Open",
+    "remarks": null,
+    "imageUrl": null,
+    "createdAt": "2025-10-22T01:53:16.702Z",
+    "updatedAt": "2025-10-22T01:53:16.702Z",
+    "resolvedAt": null
+  },
+  {
+    "id": "complaint-1761098008667",
+    "customerId": "2",
+    "title": "Air Conditioning Problem",
+    "description": "The AC is not working in room 205",
+    "status": "Open",
+    "remarks": null,
+    "imageUrl": null,
+    "createdAt": "2025-10-22T01:53:28.667Z",
+    "updatedAt": "2025-10-22T01:53:28.667Z",
+    "resolvedAt": null
+  },
+  {
+    "id": "complaint-1761098019389",
+    "customerId": "3",
+    "title": "Noisy Environment",
+    "description": "Too much noise from construction nearby",
+    "status": "Open",
+    "remarks": null,
+    "imageUrl": null,
+    "createdAt": "2025-10-22T01:53:39.389Z",
+    "updatedAt": "2025-10-22T01:53:39.389Z",
+    "resolvedAt": null
+  }
+]

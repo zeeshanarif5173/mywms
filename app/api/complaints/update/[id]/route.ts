@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { updateComplaint } from '@/lib/db-service'
+import { getPersistentComplaints, savePersistentComplaints } from '@/lib/persistent-complaints'
 
 // Force dynamic rendering and prevent static generation
 export const dynamic = 'force-dynamic'
@@ -19,11 +19,27 @@ export async function PUT(
       return NextResponse.json({ error: 'Complaint ID is required' }, { status: 400 })
     }
 
-    const updatedComplaint = await updateComplaint(complaintId, body)
+    const complaints = getPersistentComplaints()
+    const complaintIndex = complaints.findIndex(c => c.id === complaintId)
     
-    if (!updatedComplaint) {
+    if (complaintIndex === -1) {
       return NextResponse.json({ error: 'Complaint not found' }, { status: 404 })
     }
+
+    // Update the complaint
+    const updatedComplaint = {
+      ...complaints[complaintIndex],
+      ...body,
+      updatedAt: new Date().toISOString()
+    }
+
+    // If status is being changed to Resolved, set resolvedAt
+    if (body.status === 'Resolved' && complaints[complaintIndex].status !== 'Resolved') {
+      updatedComplaint.resolvedAt = new Date().toISOString()
+    }
+
+    complaints[complaintIndex] = updatedComplaint
+    savePersistentComplaints(complaints)
 
     return NextResponse.json(updatedComplaint)
   } catch (error) {

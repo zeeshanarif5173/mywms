@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAllComplaints } from '@/lib/db-service'
+import { getPersistentComplaints } from '@/lib/persistent-complaints'
 
 // Force dynamic rendering and prevent static generation
 export const dynamic = 'force-dynamic'
@@ -9,7 +9,7 @@ export const revalidate = 0
 
 export async function GET(request: NextRequest) {
   try {
-    const complaints = await getAllComplaints()
+    const complaints = getPersistentComplaints()
     return NextResponse.json(complaints)
   } catch (error) {
     console.error('Error fetching all complaints:', error)
