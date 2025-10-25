@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import {
@@ -62,7 +63,7 @@ interface DashboardStats {
   }>
 }
 
-export default function AdminDashboard() {
+const AdminDashboard = React.memo(function AdminDashboard() {
   const { data: session } = useSession()
   const [stats, setStats] = useState<DashboardStats>({
     totalCustomers: 0,
@@ -89,7 +90,19 @@ export default function AdminDashboard() {
     const fetchStats = async () => {
       try {
         setLoading(true)
-        const response = await fetch('/api/admin/dashboard-stats')
+        // Use AbortController for request cancellation
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 second timeout
+        
+        const response = await fetch('/api/admin/dashboard-stats', {
+          signal: controller.signal,
+          headers: {
+            'Cache-Control': 'max-age=30' // Client-side caching
+          }
+        })
+        
+        clearTimeout(timeoutId)
+        
         if (response.ok) {
           const data = await response.json()
           setStats(data)
@@ -97,7 +110,11 @@ export default function AdminDashboard() {
           console.error('Failed to fetch dashboard stats')
         }
       } catch (error) {
-        console.error('Error fetching dashboard stats:', error)
+        if (error.name === 'AbortError') {
+          console.log('Request was aborted due to timeout')
+        } else {
+          console.error('Error fetching dashboard stats:', error)
+        }
       } finally {
         setLoading(false)
       }
@@ -246,26 +263,36 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-gray-900">Top Customers</h2>
-            <ArrowTrendingUpIcon className="w-6 h-6 text-gray-400" />
+            <Link 
+              href="/admin/users" 
+              className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 transition-colors"
+            >
+              <span className="text-sm font-medium">View All</span>
+              <ArrowTrendingUpIcon className="w-4 h-4" />
+            </Link>
           </div>
           <div className="space-y-3">
             {stats.topCustomers.length > 0 ? (
               stats.topCustomers.map((customer, index) => (
-                <div key={customer.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <Link
+                  key={customer.id}
+                  href={`/admin/users?view=${customer.id}`}
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-blue-50 hover:border-blue-200 border border-transparent transition-all duration-200 cursor-pointer group"
+                >
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-200 transition-colors">
                       <span className="text-sm font-medium text-blue-600">#{index + 1}</span>
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">{customer.name}</p>
+                      <p className="font-medium text-gray-900 group-hover:text-blue-900 transition-colors">{customer.name}</p>
                       <p className="text-sm text-gray-500">Customer ID: {customer.id}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold text-gray-900">{customer.hours}h</p>
+                    <p className="font-semibold text-gray-900 group-hover:text-blue-900 transition-colors">{customer.hours}h</p>
                     <p className="text-xs text-gray-500">Total time</p>
                   </div>
-                </div>
+                </Link>
               ))
             ) : (
               <p className="text-gray-500 text-center py-4">No time tracking data available</p>
@@ -277,17 +304,27 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-gray-900">Recent Activity</h2>
-            <ClockIcon className="w-6 h-6 text-gray-400" />
+            <Link 
+              href="/admin/complaints" 
+              className="flex items-center space-x-2 text-orange-600 hover:text-orange-800 transition-colors"
+            >
+              <span className="text-sm font-medium">View All</span>
+              <ClockIcon className="w-4 h-4" />
+            </Link>
           </div>
           <div className="space-y-3">
             {stats.recentActivity.length > 0 ? (
               stats.recentActivity.map((activity) => (
-                <div key={activity.id} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                <Link
+                  key={activity.id}
+                  href={`/admin/complaints?view=${activity.id}`}
+                  className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-orange-50 hover:border-orange-200 border border-transparent transition-all duration-200 cursor-pointer group"
+                >
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    activity.status === 'Open' ? 'bg-red-100' :
-                    activity.status === 'In Process' ? 'bg-yellow-100' :
-                    activity.status === 'Resolved' ? 'bg-green-100' : 'bg-gray-100'
-                  }`}>
+                    activity.status === 'Open' ? 'bg-red-100 group-hover:bg-red-200' :
+                    activity.status === 'In Process' ? 'bg-yellow-100 group-hover:bg-yellow-200' :
+                    activity.status === 'Resolved' ? 'bg-green-100 group-hover:bg-green-200' : 'bg-gray-100 group-hover:bg-gray-200'
+                  } transition-colors`}>
                     <ExclamationTriangleIcon className={`w-4 h-4 ${
                       activity.status === 'Open' ? 'text-red-600' :
                       activity.status === 'In Process' ? 'text-yellow-600' :
@@ -295,7 +332,7 @@ export default function AdminDashboard() {
                     }`} />
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900">{activity.title}</p>
+                    <p className="font-medium text-gray-900 group-hover:text-orange-900 transition-colors">{activity.title}</p>
                     <p className="text-sm text-gray-500">by {activity.customer}</p>
                   </div>
                   <div className="text-right">
@@ -310,7 +347,7 @@ export default function AdminDashboard() {
                       {activity.status}
                     </span>
                   </div>
-                </div>
+                </Link>
               ))
             ) : (
               <p className="text-gray-500 text-center py-4">No recent activity</p>
@@ -355,4 +392,6 @@ export default function AdminDashboard() {
       </div>
     </div>
   )
-}
+})
+
+export default AdminDashboard

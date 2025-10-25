@@ -3,6 +3,7 @@ import path from 'path'
 
 const DATA_DIR = path.join(process.cwd(), 'data')
 const USERS_FILE = path.join(DATA_DIR, 'users.json')
+const STAFF_TIME_ENTRIES_FILE = path.join(DATA_DIR, 'staff-time-entries.json')
 
 // Ensure data directory exists
 if (typeof window === 'undefined' && !fs.existsSync(DATA_DIR)) {
@@ -51,6 +52,51 @@ export function savePersistentUsers(users: any[]): void {
     console.log(`Saved ${users.length} users to persistent storage`)
   } catch (error) {
     console.error('Error saving users file:', error)
+  }
+}
+
+// Staff time entries functions
+export function getPersistentStaffTimeEntries(): any[] {
+  if (typeof window !== 'undefined') {
+    // Client-side: use localStorage
+    try {
+      const stored = localStorage.getItem('coworking_portal_staff_time_entries')
+      return stored ? JSON.parse(stored) : []
+    } catch {
+      return []
+    }
+  }
+
+  // Server-side: use file storage
+  try {
+    if (fs.existsSync(STAFF_TIME_ENTRIES_FILE)) {
+      const data = fs.readFileSync(STAFF_TIME_ENTRIES_FILE, 'utf8')
+      return JSON.parse(data)
+    }
+  } catch (error) {
+    console.error('Error reading staff time entries file:', error)
+  }
+  
+  return []
+}
+
+export function savePersistentStaffTimeEntries(entries: any[]): void {
+  if (typeof window !== 'undefined') {
+    // Client-side: use localStorage
+    try {
+      localStorage.setItem('coworking_portal_staff_time_entries', JSON.stringify(entries))
+    } catch (error) {
+      console.error('Error saving to localStorage:', error)
+    }
+    return
+  }
+
+  // Server-side: use file storage
+  try {
+    fs.writeFileSync(STAFF_TIME_ENTRIES_FILE, JSON.stringify(entries, null, 2))
+    console.log(`Saved ${entries.length} staff time entries to persistent storage`)
+  } catch (error) {
+    console.error('Error saving staff time entries file:', error)
   }
 }
 

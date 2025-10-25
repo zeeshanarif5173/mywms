@@ -1,6 +1,7 @@
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 export const authOptions = {
+  secret: process.env.NEXTAUTH_SECRET || 'your-secret-key-here',
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -69,11 +70,13 @@ export const authOptions = {
   ],
   session: {
     strategy: 'jwt' as const,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
     async jwt({ token, user }: { token: any, user: any }) {
       if (user) {
         token.role = user.role
+        token.branchId = user.branchId
       }
       return token
     },
@@ -81,6 +84,7 @@ export const authOptions = {
       if (token) {
         session.user.id = token.sub
         session.user.role = token.role
+        session.user.branchId = token.branchId
       }
       return session
     },

@@ -4,7 +4,7 @@ const nextConfig = {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   },
-  // Skip static optimization for API routes
+  // Performance optimizations
   experimental: {
     outputFileTracingExcludes: {
       '*': [
@@ -12,6 +12,15 @@ const nextConfig = {
         './node_modules/next/dist/compiled/@swc/core-*',
       ],
     },
+    // Enable React strict mode for better performance
+    reactStrictMode: true,
+    // Enable SWC minification
+    swcMinify: true,
+  },
+  // Compiler optimizations
+  compiler: {
+    // Remove console.log in production
+    removeConsole: process.env.NODE_ENV === 'production',
   },
   // Handle build-time database connection issues
   webpack: (config, { isServer }) => {
@@ -29,7 +38,7 @@ const nextConfig = {
   },
   // Disable static optimization for pages that use API routes
   trailingSlash: false,
-  // Skip build-time data collection for API routes
+  // Optimized caching headers
   async headers() {
     return [
       {
@@ -37,7 +46,16 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'no-store, max-age=0',
+            value: 'public, max-age=30, s-maxage=30',
+          },
+        ],
+      },
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },

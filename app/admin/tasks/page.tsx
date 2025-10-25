@@ -116,37 +116,63 @@ export default function AdminTasks() {
     comment: ''
   })
 
-  // Load tasks and stats
+  // Load tasks and stats with optimized loading
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true)
-        // Fetch tasks
-        const tasksResponse = await fetch('/api/tasks')
-        if (tasksResponse.ok) {
-          const tasksData = await tasksResponse.json()
-          setTasks(tasksData)
+        
+        // Use AbortController for request cancellation
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 8000) // 8 second timeout
+        
+        // Fetch both tasks and stats in parallel
+        const [tasksResponse, statsResponse] = await Promise.allSettled([
+          fetch('/api/tasks', {
+            signal: controller.signal,
+            headers: { 'Cache-Control': 'max-age=30' }
+          }),
+          fetch('/api/tasks/stats', {
+            signal: controller.signal,
+            headers: { 'Cache-Control': 'max-age=30' }
+          })
+        ])
+        
+        clearTimeout(timeoutId)
+        
+        // Handle tasks response
+        if (tasksResponse.status === 'fulfilled' && tasksResponse.value.ok) {
+          const tasksData = await tasksResponse.value.json()
+          setTasks(Array.isArray(tasksData) ? tasksData : [])
         } else {
+          console.error('Tasks API failed:', tasksResponse.status === 'rejected' ? tasksResponse.reason : 'Response not ok')
           // Fallback to localStorage if API fails
           try {
             const localTasks = localStorage.getItem('coworking_portal_tasks')
             if (localTasks) {
               const parsedTasks = JSON.parse(localTasks)
-              setTasks(parsedTasks)
+              setTasks(Array.isArray(parsedTasks) ? parsedTasks : [])
+            } else {
+              // If no localStorage data, set empty array
+              setTasks([])
             }
           } catch (error) {
             console.error('AdminTasks: Error loading from localStorage:', error)
+            setTasks([])
           }
         }
 
-        // Fetch stats
-        const statsResponse = await fetch('/api/tasks/stats')
-        if (statsResponse.ok) {
-          const statsData = await statsResponse.json()
+        // Handle stats response
+        if (statsResponse.status === 'fulfilled' && statsResponse.value.ok) {
+          const statsData = await statsResponse.value.json()
           setStats(statsData)
         }
       } catch (error) {
-        console.error('Error loading data:', error)
+        if (error.name === 'AbortError') {
+          console.log('Request was aborted due to timeout')
+        } else {
+          console.error('Error loading data:', error)
+        }
       } finally {
         setLoading(false)
       }
@@ -358,6 +384,24 @@ export default function AdminTasks() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  // Error state - if no session or no data
+  if (!session) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h2>
+          <p className="text-gray-600 mb-6">You need to be signed in to access this page.</p>
+          <button
+            onClick={() => window.location.href = '/auth/signin'}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Go to Sign In
+          </button>
+        </div>
       </div>
     )
   }
@@ -716,11 +760,25 @@ export default function AdminTasks() {
           ))}
         </div>
 
-        {filteredTasks.length === 0 && (
+        {filteredTasks.length === 0 && !loading && (
           <div className="text-center py-12">
             <DocumentTextIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No tasks found</h3>
-            <p className="text-gray-500">Try adjusting your search or filter criteria.</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              {tasks.length === 0 ? 'No tasks available' : 'No tasks found'}
+            </h3>
+            <p className="text-gray-500 mb-4">
+              {tasks.length === 0 
+                ? 'Create your first task to get started with task management.' 
+                : 'Try adjusting your search or filter criteria.'}
+            </p>
+            {tasks.length === 0 && (
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Create First Task
+              </button>
+            )}
           </div>
         )}
       </main>

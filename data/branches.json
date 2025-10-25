@@ -1,0 +1,15 @@
+[
+  {
+    "id": "branch-1761173300145",
+    "name": "WR Lahore ",
+    "address": "WR",
+    "city": "Lahore",
+    "state": "punjab",
+    "zipCode": "54000",
+    "phone": "03003003",
+    "email": "admin@example.com",
+    "isActive": true,
+    "createdAt": "2025-10-22T22:48:20.145Z",
+    "updatedAt": "2025-10-25T11:07:03.552Z"
+  }
+]

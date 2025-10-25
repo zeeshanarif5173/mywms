@@ -10,45 +10,57 @@ export const runtime = 'nodejs'
 export const preferredRegion = 'auto'
 export const revalidate = 0
 
+// Simple in-memory cache for dashboard stats
+let cachedStats: any = null
+let cacheTimestamp = 0
+const CACHE_DURATION = 30000 // 30 seconds
+
 export async function GET(request: NextRequest) {
   try {
-    // Fetch all data from persistent storage
-    const [
-      complaints,
-      customers,
-      bookings,
-      tasks
-    ] = [
-      getPersistentComplaints(),
-      getPersistentUsers(),
-      getPersistentBookings(),
-      getPersistentTasks()
-    ]
+    // Check if we have valid cached data
+    const now = Date.now()
+    if (cachedStats && (now - cacheTimestamp) < CACHE_DURATION) {
+      return NextResponse.json(cachedStats)
+    }
 
-    // Calculate statistics
-    const totalCustomers = customers.length
-    const activeCustomers = customers.filter(c => c.accountStatus === 'Active').length
-    const lockedCustomers = customers.filter(c => c.accountStatus === 'Locked').length
-    
-    const totalComplaints = complaints.length
-    const openComplaints = complaints.filter(c => c.status === 'Open').length
-    const inProcessComplaints = complaints.filter(c => c.status === 'In Process').length
-    const resolvedComplaints = complaints.filter(c => c.status === 'Resolved').length
-    
-    const totalTasks = tasks.length
-    const pendingTasks = tasks.filter(t => t.status === 'Pending').length
-    const completedTasks = tasks.filter(t => t.status === 'Completed').length
-    
-    const totalBookings = bookings.length
-    const activeBookings = bookings.filter(b => new Date(b.endTime) > new Date()).length
-    
-    const totalTimeEntries = 0 // TODO: Add time tracking persistent storage
-    const totalHours = 0 // TODO: Add time tracking persistent storage
+    // Fetch all data from persistent storage in parallel
+    const [complaints, customers, bookings, tasks] = await Promise.all([
+      Promise.resolve(getPersistentComplaints()),
+      Promise.resolve(getPersistentUsers()),
+      Promise.resolve(getPersistentBookings()),
+      Promise.resolve(getPersistentTasks())
+    ])
 
-    // Calculate revenue (simplified for now)
-    const totalRevenue = 0 // TODO: Add revenue calculation
+    // Optimize calculations with single-pass filtering
+    const customerStats = customers.reduce((acc, c) => {
+      acc.total++
+      if (c.accountStatus === 'Active') acc.active++
+      if (c.accountStatus === 'Locked') acc.locked++
+      return acc
+    }, { total: 0, active: 0, locked: 0 })
 
-    // Recent activity (last 5 complaints)
+    const complaintStats = complaints.reduce((acc, c) => {
+      acc.total++
+      if (c.status === 'Open') acc.open++
+      if (c.status === 'In Process') acc.inProcess++
+      if (c.status === 'Resolved') acc.resolved++
+      return acc
+    }, { total: 0, open: 0, inProcess: 0, resolved: 0 })
+
+    const taskStats = tasks.reduce((acc, t) => {
+      acc.total++
+      if (t.status === 'Pending') acc.pending++
+      if (t.status === 'Completed') acc.completed++
+      return acc
+    }, { total: 0, pending: 0, completed: 0 })
+
+    const bookingStats = bookings.reduce((acc, b) => {
+      acc.total++
+      if (new Date(b.endTime) > new Date()) acc.active++
+      return acc
+    }, { total: 0, active: 0 })
+
+    // Optimize recent activity with single sort and slice
     const recentComplaints = complaints
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 5)
@@ -61,47 +73,53 @@ export async function GET(request: NextRequest) {
         createdAt: complaint.createdAt
       }))
 
-    // Top customers (simplified for now)
+    // Optimize top customers
     const topCustomers = customers
       .slice(0, 5)
       .map(customer => ({
         id: customer.id,
         name: customer.name,
-        hours: 0 // TODO: Add actual time tracking
+        hours: 0
       }))
 
-    return NextResponse.json({
+    const stats = {
       // User Statistics
-      totalCustomers,
-      activeCustomers,
-      lockedCustomers,
+      totalCustomers: customerStats.total,
+      activeCustomers: customerStats.active,
+      lockedCustomers: customerStats.locked,
       
       // Complaint Statistics
-      totalComplaints,
-      openComplaints,
-      inProcessComplaints,
-      resolvedComplaints,
+      totalComplaints: complaintStats.total,
+      openComplaints: complaintStats.open,
+      inProcessComplaints: complaintStats.inProcess,
+      resolvedComplaints: complaintStats.resolved,
       
       // Task Statistics
-      totalTasks,
-      pendingTasks,
-      completedTasks,
+      totalTasks: taskStats.total,
+      pendingTasks: taskStats.pending,
+      completedTasks: taskStats.completed,
       
       // Booking Statistics
-      totalBookings,
-      activeBookings,
+      totalBookings: bookingStats.total,
+      activeBookings: bookingStats.active,
       
       // Time Tracking Statistics
-      totalTimeEntries,
-      totalHours: Math.round(totalHours * 10) / 10,
+      totalTimeEntries: 0,
+      totalHours: 0,
       
       // Revenue Statistics
-      totalRevenue: Math.round(totalRevenue),
+      totalRevenue: 0,
       
       // Additional Data
       topCustomers,
       recentActivity: recentComplaints
-    })
+    }
+
+    // Cache the results
+    cachedStats = stats
+    cacheTimestamp = now
+
+    return NextResponse.json(stats)
   } catch (error) {
     console.error('Error fetching dashboard stats:', error)
     return NextResponse.json({ error: 'Failed to fetch dashboard statistics' }, { status: 500 })

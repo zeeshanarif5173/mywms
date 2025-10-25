@@ -1,7 +1,9 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback, memo } from 'react'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import {
   BuildingOfficeIcon,
   PlusIcon,
@@ -12,16 +14,12 @@ import {
   EnvelopeIcon,
   CheckCircleIcon,
   XCircleIcon,
-  XMarkIcon,
-  TagIcon,
   MagnifyingGlassIcon,
   FunnelIcon,
-  EyeIcon,
-  ArrowPathIcon,
-  GlobeAltIcon,
-  ClockIcon,
-  UsersIcon,
-  ChartBarIcon
+  CubeIcon,
+  HomeIcon,
+  ChartBarIcon,
+  EyeIcon
 } from '@heroicons/react/24/outline'
 
 interface Branch {
@@ -38,26 +36,358 @@ interface Branch {
   updatedAt: string
 }
 
+// Memoized Branch Card Component
+const BranchCard = memo(({ 
+  branch, 
+  onEdit, 
+  onDelete 
+}: { 
+  branch: Branch
+  onEdit: (branch: Branch) => void
+  onDelete: (id: string) => void
+}) => {
+  const [inventoryData, setInventoryData] = useState<any>(null)
+  const [loadingInventory, setLoadingInventory] = useState(false)
+  const [showDetails, setShowDetails] = useState(false)
+
+  useEffect(() => {
+    const fetchInventory = async () => {
+      setLoadingInventory(true)
+      try {
+        console.log('Fetching inventory for branch:', branch.id)
+        const response = await fetch(`/api/branches/${branch.id}/inventory`)
+        console.log('Inventory response status:', response.status)
+        if (response.ok) {
+          const data = await response.json()
+          console.log('Inventory data received:', data)
+          setInventoryData(data)
+        } else {
+          console.error('Failed to fetch inventory data')
+        }
+      } catch (error) {
+        console.error('Error fetching inventory:', error)
+      } finally {
+        setLoadingInventory(false)
+      }
+    }
+
+    fetchInventory()
+  }, [branch.id])
+
+  return (
+    <div className="group bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+      <div className="p-8">
+        <div className="flex items-start justify-between mb-6">
+          <div className="flex items-center space-x-4">
+            <div className={`p-4 rounded-2xl ${branch.isActive ? 'bg-gradient-to-br from-blue-100 to-blue-200' : 'bg-gradient-to-br from-red-100 to-red-200'}`}>
+              <BuildingOfficeIcon className={`w-7 h-7 ${branch.isActive ? 'text-blue-600' : 'text-red-600'}`} />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{branch.name}</h3>
+              <div className="flex items-center space-x-2">
+                {branch.isActive ? (
+                  <CheckCircleIcon className="w-5 h-5 text-green-500" />
+                ) : (
+                  <XCircleIcon className="w-5 h-5 text-red-500" />
+                )}
+                <span className={`text-sm font-semibold px-3 py-1 rounded-full ${branch.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                  {branch.isActive ? 'Active' : 'Inactive'}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="flex space-x-2 opacity-100 transition-opacity duration-200">
+            <button
+              onClick={() => window.location.href = `/admin/branches/${branch.id}`}
+              className="p-3 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all duration-200"
+              title="View Details"
+            >
+              <EyeIcon className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => onEdit(branch)}
+              className="p-3 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200"
+              title="Edit Branch"
+            >
+              <PencilIcon className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => onDelete(branch.id)}
+              className="p-3 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200"
+              title="Delete Branch"
+            >
+              <TrashIcon className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex items-start space-x-4">
+            <div className="p-2 bg-gray-100 rounded-lg">
+              <MapPinIcon className="w-5 h-5 text-gray-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-900">{branch.address}</p>
+              <p className="text-sm text-gray-500">{branch.city}, {branch.state} {branch.zipCode}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <div className="p-2 bg-gray-100 rounded-lg">
+              <PhoneIcon className="w-5 h-5 text-gray-600" />
+            </div>
+            <p className="text-sm font-medium text-gray-900">{branch.phone}</p>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <div className="p-2 bg-gray-100 rounded-lg">
+              <EnvelopeIcon className="w-5 h-5 text-gray-600" />
+            </div>
+            <p className="text-sm font-medium text-gray-900">{branch.email}</p>
+          </div>
+        </div>
+
+        {/* Inventory and Rooms Overview */}
+        {inventoryData && (
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <div className="grid grid-cols-2 gap-4">
+              {/* Inventory Summary */}
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4">
+                <div className="flex items-center space-x-2 mb-3">
+                  <CubeIcon className="w-5 h-5 text-blue-600" />
+                  <h4 className="font-semibold text-gray-900">Inventory</h4>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Total Items:</span>
+                    <span className="font-medium">{inventoryData.inventory.totalItems}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Total Quantity:</span>
+                    <span className="font-medium">{inventoryData.inventory.totalQuantity}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Total Value:</span>
+                    <span className="font-medium">Rs {inventoryData.inventory.totalValue.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Rooms Summary */}
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4">
+                <div className="flex items-center space-x-2 mb-3">
+                  <HomeIcon className="w-5 h-5 text-green-600" />
+                  <h4 className="font-semibold text-gray-900">Rooms</h4>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Total Rooms:</span>
+                    <span className="font-medium">{inventoryData.rooms.total}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Active:</span>
+                    <span className="font-medium">{inventoryData.rooms.active}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Bookable:</span>
+                    <span className="font-medium">{inventoryData.rooms.bookable}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Inventory Categories */}
+            <div className="mt-4">
+              <h5 className="text-sm font-semibold text-gray-700 mb-3">Inventory by Category</h5>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="bg-orange-50 rounded-lg p-3 text-center">
+                  <div className="text-orange-600 font-bold text-lg">
+                    {inventoryData.inventory.byCategory.fixture.length}
+                  </div>
+                  <div className="text-xs text-orange-700">Fixtures</div>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-3 text-center">
+                  <div className="text-blue-600 font-bold text-lg">
+                    {inventoryData.inventory.byCategory.moveable.length}
+                  </div>
+                  <div className="text-xs text-blue-700">Moveable</div>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-3 text-center">
+                  <div className="text-purple-600 font-bold text-lg">
+                    {inventoryData.inventory.byCategory.consumable.length}
+                  </div>
+                  <div className="text-xs text-purple-700">Consumable</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Toggle Details Button */}
+            <div className="mt-4">
+              <button
+                onClick={() => setShowDetails(!showDetails)}
+                className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm font-medium text-gray-700"
+              >
+                <EyeIcon className="w-4 h-4" />
+                <span>{showDetails ? 'Hide' : 'Show'} Full Details</span>
+              </button>
+            </div>
+
+            {/* Detailed Information */}
+            {showDetails && inventoryData && (
+              <div className="mt-6 space-y-6">
+                {/* Detailed Inventory */}
+                <div>
+                  <h5 className="text-sm font-semibold text-gray-700 mb-3">Detailed Inventory</h5>
+                  <div className="space-y-3">
+                    {inventoryData.inventory.byCategory.fixture.length > 0 && (
+                      <div className="bg-orange-50 rounded-lg p-4">
+                        <h6 className="font-medium text-orange-800 mb-2">Fixtures ({inventoryData.inventory.byCategory.fixture.length})</h6>
+                        <div className="space-y-2">
+                          {inventoryData.inventory.byCategory.fixture.slice(0, 3).map((item: any) => (
+                            <div key={item.id} className="flex justify-between text-sm">
+                              <span className="text-orange-700">{item.name}</span>
+                              <span className="text-orange-600 font-medium">Qty: {item.quantity || 0}</span>
+                            </div>
+                          ))}
+                          {inventoryData.inventory.byCategory.fixture.length > 3 && (
+                            <div className="text-xs text-orange-600">
+                              +{inventoryData.inventory.byCategory.fixture.length - 3} more items
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {inventoryData.inventory.byCategory.moveable.length > 0 && (
+                      <div className="bg-blue-50 rounded-lg p-4">
+                        <h6 className="font-medium text-blue-800 mb-2">Moveable Items ({inventoryData.inventory.byCategory.moveable.length})</h6>
+                        <div className="space-y-2">
+                          {inventoryData.inventory.byCategory.moveable.slice(0, 3).map((item: any) => (
+                            <div key={item.id} className="flex justify-between text-sm">
+                              <span className="text-blue-700">{item.name}</span>
+                              <span className="text-blue-600 font-medium">Qty: {item.quantity || 0}</span>
+                            </div>
+                          ))}
+                          {inventoryData.inventory.byCategory.moveable.length > 3 && (
+                            <div className="text-xs text-blue-600">
+                              +{inventoryData.inventory.byCategory.moveable.length - 3} more items
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {inventoryData.inventory.byCategory.consumable.length > 0 && (
+                      <div className="bg-purple-50 rounded-lg p-4">
+                        <h6 className="font-medium text-purple-800 mb-2">Consumables ({inventoryData.inventory.byCategory.consumable.length})</h6>
+                        <div className="space-y-2">
+                          {inventoryData.inventory.byCategory.consumable.slice(0, 3).map((item: any) => (
+                            <div key={item.id} className="flex justify-between text-sm">
+                              <span className="text-purple-700">{item.name}</span>
+                              <span className="text-purple-600 font-medium">Qty: {item.quantity || 0}</span>
+                            </div>
+                          ))}
+                          {inventoryData.inventory.byCategory.consumable.length > 3 && (
+                            <div className="text-xs text-purple-600">
+                              +{inventoryData.inventory.byCategory.consumable.length - 3} more items
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Detailed Rooms */}
+                <div>
+                  <h5 className="text-sm font-semibold text-gray-700 mb-3">Room Details</h5>
+                  <div className="space-y-3">
+                    {inventoryData.rooms.list.map((room: any) => (
+                      <div key={room.id} className="bg-gray-50 rounded-lg p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <h6 className="font-medium text-gray-900">{room.name}</h6>
+                          <div className="flex items-center space-x-2">
+                            <span className={`px-2 py-1 text-xs rounded-full ${
+                              room.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                            }`}>
+                              {room.isActive ? 'Active' : 'Inactive'}
+                            </span>
+                            {room.isBookable && (
+                              <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-700">
+                                Bookable
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                          <div>
+                            <span className="font-medium">Type:</span> {room.type}
+                          </div>
+                          <div>
+                            <span className="font-medium">Capacity:</span> {room.capacity}
+                          </div>
+                          <div>
+                            <span className="font-medium">Floor:</span> {room.floor}
+                          </div>
+                          <div>
+                            <span className="font-medium">Location:</span> {room.location}
+                          </div>
+                        </div>
+                        {room.amenities && room.amenities.length > 0 && (
+                          <div className="mt-2">
+                            <span className="text-sm font-medium text-gray-700">Amenities:</span>
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {room.amenities.map((amenity: string, index: number) => (
+                                <span key={index} className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded">
+                                  {amenity}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* View Details Button */}
+            <div className="mt-4">
+              <button
+                onClick={() => window.location.href = `/admin/branches/${branch.id}`}
+                className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors text-sm font-medium text-blue-700"
+              >
+                <EyeIcon className="w-4 h-4" />
+                <span>View Full Details & Inventory</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {loadingInventory && (
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <div className="flex items-center justify-center space-x-2 text-gray-500">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-400"></div>
+              <span className="text-sm">Loading inventory...</span>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+})
+
+BranchCard.displayName = 'BranchCard'
+
 export default function AdminBranches() {
   const { data: session } = useSession()
+  const searchParams = useSearchParams()
   const [branches, setBranches] = useState<Branch[]>([])
   const [loading, setLoading] = useState(true)
-  const [showForm, setShowForm] = useState(false)
-  const [editingBranch, setEditingBranch] = useState<Branch | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('ALL')
-  const [formData, setFormData] = useState({
-    name: '',
-    address: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    phone: '',
-    email: '',
-    isActive: true
-  })
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   useEffect(() => {
     const fetchBranches = async () => {
@@ -83,83 +413,27 @@ export default function AdminBranches() {
     }
   }, [session])
 
-  const validateForm = () => {
-    const errors: Record<string, string> = {}
-    
-    if (!formData.name.trim()) errors.name = 'Branch name is required'
-    if (!formData.address.trim()) errors.address = 'Address is required'
-    if (!formData.city.trim()) errors.city = 'City is required'
-    if (!formData.state.trim()) errors.state = 'State is required'
-    if (!formData.zipCode.trim()) errors.zipCode = 'ZIP code is required'
-    if (!formData.phone.trim()) errors.phone = 'Phone number is required'
-    if (!formData.email.trim()) errors.email = 'Email is required'
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      errors.email = 'Please enter a valid email address'
+  useEffect(() => {
+    if (searchParams.get('success') === 'created') {
+      setShowSuccess(true)
+      setTimeout(() => setShowSuccess(false), 5000)
+    } else if (searchParams.get('success') === 'updated') {
+      setShowSuccess(true)
+      setTimeout(() => setShowSuccess(false), 5000)
     }
+  }, [searchParams])
 
-    setFormErrors(errors)
-    return Object.keys(errors).length === 0
-  }
+  const handleEdit = useCallback((branch: Branch) => {
+    // Navigate to edit page
+    window.location.href = `/admin/branches/edit/${branch.id}`
+  }, [])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!validateForm()) return
+  const handleViewDetails = useCallback((branch: Branch) => {
+    // Navigate to branch details page
+    window.location.href = `/admin/branches/${branch.id}`
+  }, [])
 
-    setIsSubmitting(true)
-    
-    try {
-      const url = editingBranch ? `/api/branches/${editingBranch.id}` : '/api/branches'
-      const method = editingBranch ? 'PUT' : 'POST'
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
-
-      if (response.ok) {
-        // Refresh branches list
-        const branchesResponse = await fetch('/api/branches')
-        if (branchesResponse.ok) {
-          const data = await branchesResponse.json()
-          setBranches(Array.isArray(data) ? data : [])
-        }
-        
-        setShowForm(false)
-        setEditingBranch(null)
-        resetForm()
-        alert(editingBranch ? 'Branch updated successfully!' : 'Branch created successfully!')
-      } else {
-        const errorData = await response.json()
-        alert(`Failed to save branch: ${errorData.error || 'Unknown error'}`)
-      }
-    } catch (error) {
-      console.error('Error saving branch:', error)
-      alert('Failed to save branch')
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-
-  const handleEdit = (branch: Branch) => {
-    setEditingBranch(branch)
-    setFormData({
-      name: branch.name,
-      address: branch.address,
-      city: branch.city,
-      state: branch.state,
-      zipCode: branch.zipCode,
-      phone: branch.phone,
-      email: branch.email,
-      isActive: branch.isActive
-    })
-    setShowForm(true)
-  }
-
-  const handleDelete = async (branchId: string) => {
+  const handleDelete = useCallback(async (branchId: string) => {
     if (!confirm('Are you sure you want to delete this branch?')) return
     
     try {
@@ -181,58 +455,28 @@ export default function AdminBranches() {
       console.error('Error deleting branch:', error)
       alert('Failed to delete branch')
     }
-  }
+  }, [])
 
-  const resetForm = () => {
-    setFormData({
-      name: '',
-      address: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      phone: '',
-      email: '',
-      isActive: true
+  const filteredBranches = useMemo(() => {
+    return branches.filter(branch => {
+      const matchesSearch = searchTerm === '' || 
+        branch.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        branch.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        branch.address.toLowerCase().includes(searchTerm.toLowerCase())
+      
+      const matchesStatus = statusFilter === 'ALL' || 
+        (statusFilter === 'ACTIVE' && branch.isActive) ||
+        (statusFilter === 'INACTIVE' && !branch.isActive)
+      
+      return matchesSearch && matchesStatus
     })
-    setFormErrors({})
-  }
+  }, [branches, searchTerm, statusFilter])
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target
-    const checked = (e.target as HTMLInputElement).checked
-    
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }))
-    
-    // Clear error when user starts typing
-    if (formErrors[name]) {
-      setFormErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }))
-    }
-  }
-
-  const filteredBranches = branches.filter(branch => {
-    const matchesSearch = searchTerm === '' || 
-      branch.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      branch.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      branch.address.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    const matchesStatus = statusFilter === 'ALL' || 
-      (statusFilter === 'ACTIVE' && branch.isActive) ||
-      (statusFilter === 'INACTIVE' && !branch.isActive)
-    
-    return matchesSearch && matchesStatus
-  })
-
-  const stats = {
+  const stats = useMemo(() => ({
     total: branches.length,
     active: branches.filter(b => b.isActive).length,
     inactive: branches.filter(b => !b.isActive).length
-  }
+  }), [branches])
 
   if (loading) {
     return (
@@ -258,491 +502,148 @@ export default function AdminBranches() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+      {/* Success Message */}
+      {showSuccess && (
+        <div className="fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2 animate-in slide-in-from-right duration-300">
+          <CheckCircleIcon className="w-5 h-5" />
+          <span>
+            {searchParams.get('success') === 'created' 
+              ? 'Branch created successfully!' 
+              : 'Branch updated successfully!'}
+          </span>
+          <button
+            onClick={() => setShowSuccess(false)}
+            className="ml-2 text-white hover:text-green-200"
+          >
+            ×
+          </button>
+        </div>
+      )}
+      
       <div className="space-y-8 p-6">
         {/* Premium Header Section */}
         <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 rounded-3xl shadow-2xl">
           <div className="absolute inset-0 bg-black opacity-10"></div>
           <div className="relative p-8 lg:p-12">
             <div className="flex flex-col lg:flex-row items-center justify-between">
-              <div className="text-white mb-6 lg:mb-0">
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="p-3 bg-white bg-opacity-20 rounded-xl backdrop-blur-sm">
-                    <BuildingOfficeIcon className="w-8 h-8 text-white" />
+              <div className="text-center lg:text-left mb-8 lg:mb-0">
+                <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+                  Branch Management
+                </h1>
+                <p className="text-xl text-blue-100 mb-6">
+                  Manage your coworking spaces and inventory
+                </p>
+                <div className="flex flex-wrap justify-center lg:justify-start gap-4 text-sm">
+                  <div className="bg-white bg-opacity-20 rounded-lg px-4 py-2 backdrop-blur-sm">
+                    <span className="text-white font-semibold">{stats.total} Total Branches</span>
                   </div>
-                  <div>
-                    <h1 className="text-4xl font-bold">Branch Management</h1>
-                    <p className="text-blue-100 text-lg mt-1">Manage your coworking space branches</p>
+                  <div className="bg-white bg-opacity-20 rounded-lg px-4 py-2 backdrop-blur-sm">
+                    <span className="text-white font-semibold">{stats.active} Active</span>
+                  </div>
+                  <div className="bg-white bg-opacity-20 rounded-lg px-4 py-2 backdrop-blur-sm">
+                    <span className="text-white font-semibold">{stats.inactive} Inactive</span>
                   </div>
                 </div>
               </div>
-              
-              <div className="flex space-x-8">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">{stats.total}</div>
-                  <div className="text-blue-100 text-sm font-medium">Total Branches</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">{stats.active}</div>
-                  <div className="text-blue-100 text-sm font-medium">Active</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">{stats.inactive}</div>
-                  <div className="text-blue-100 text-sm font-medium">Inactive</div>
-                </div>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link
+                  href="/admin/branches/create"
+                  className="flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                >
+                  <PlusIcon className="h-5 w-5 mr-2" />
+                  Add Branch
+                </Link>
               </div>
             </div>
           </div>
-          
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-32 translate-x-32"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full translate-y-24 -translate-x-24"></div>
         </div>
 
-
-        {/* Premium Search and Filter Bar */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-          <div className="flex flex-col lg:flex-row gap-6">
-            <div className="flex-1">
-              <div className="relative group">
-                <MagnifyingGlassIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+        {/* Search and Filter Section */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+          <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+            <div className="flex flex-col sm:flex-row gap-4 flex-1">
+              <div className="relative flex-1">
+                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
-                  placeholder="Search branches by name, city, or address..."
+                  placeholder="Search branches..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700 placeholder-gray-400"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200"
                 />
               </div>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200"
+              >
+                <option value="ALL">All Status</option>
+                <option value="ACTIVE">Active</option>
+                <option value="INACTIVE">Inactive</option>
+              </select>
             </div>
-            
-            <div className="flex flex-wrap gap-4">
-              <div className="relative">
-                <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="appearance-none px-6 py-4 pr-10 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 bg-white text-gray-700 font-medium"
-                >
-                  <option value="ALL">All Status</option>
-                  <option value="ACTIVE">Active Only</option>
-                  <option value="INACTIVE">Inactive Only</option>
-                </select>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-              </div>
-
+            <div className="flex gap-4">
               <button
                 onClick={() => {
-                  setStatusFilter('ALL')
                   setSearchTerm('')
+                  setStatusFilter('ALL')
                 }}
-                className="flex items-center px-6 py-4 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 font-medium group"
+                className="flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 font-medium group"
               >
                 <FunnelIcon className="h-5 w-5 mr-2 group-hover:rotate-180 transition-transform duration-200" />
                 Clear Filters
               </button>
 
-              <button
-                onClick={() => {
-                  setEditingBranch(null)
-                  resetForm()
-                  setShowForm(true)
-                }}
+              <Link
+                href="/admin/branches/create"
                 className="flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 <PlusIcon className="h-5 w-5 mr-2" />
                 Add Branch
-              </button>
+              </Link>
             </div>
           </div>
         </div>
 
         {/* Branches Grid */}
         {filteredBranches.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-16 text-center">
-            <div className="max-w-md mx-auto">
-              <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl flex items-center justify-center">
-                <BuildingOfficeIcon className="w-12 h-12 text-blue-600" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">No Branches Found</h3>
-              <p className="text-gray-500 mb-8 text-lg">
-                {searchTerm || statusFilter !== 'ALL'
-                  ? 'Try adjusting your search or filter criteria.'
-                  : 'Get started by adding your first branch to manage your coworking spaces.'}
-              </p>
-              {!searchTerm && statusFilter === 'ALL' && (
-                <button
-                  onClick={() => {
-                    setEditingBranch(null)
-                    resetForm()
-                    setShowForm(true)
-                  }}
-                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                >
-                  <PlusIcon className="h-5 w-5 mr-2" />
-                  Add Your First Branch
-                </button>
-              )}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-12 text-center">
+            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <BuildingOfficeIcon className="w-12 h-12 text-gray-400" />
             </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              {searchTerm || statusFilter !== 'ALL'
+                ? 'No branches found'
+                : 'No branches yet'}
+            </h3>
+            <p className="text-gray-500 mb-8 text-lg">
+              {searchTerm || statusFilter !== 'ALL'
+                ? 'Try adjusting your search or filter criteria.'
+                : 'Get started by adding your first branch to manage your coworking spaces.'}
+            </p>
+            {!searchTerm && statusFilter === 'ALL' && (
+              <Link
+                href="/admin/branches/create"
+                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                <PlusIcon className="h-5 w-5 mr-2" />
+                Add Your First Branch
+              </Link>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
             {filteredBranches.map((branch) => (
-              <div key={branch.id} className="group bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
-                <div className="p-8">
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex items-center space-x-4">
-                      <div className={`p-4 rounded-2xl ${branch.isActive ? 'bg-gradient-to-br from-blue-100 to-blue-200' : 'bg-gradient-to-br from-red-100 to-red-200'}`}>
-                        <BuildingOfficeIcon className={`w-7 h-7 ${branch.isActive ? 'text-blue-600' : 'text-red-600'}`} />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">{branch.name}</h3>
-                        <div className="flex items-center space-x-2">
-                          {branch.isActive ? (
-                            <CheckCircleIcon className="w-5 h-5 text-green-500" />
-                          ) : (
-                            <XCircleIcon className="w-5 h-5 text-red-500" />
-                          )}
-                          <span className={`text-sm font-semibold px-3 py-1 rounded-full ${branch.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                            {branch.isActive ? 'Active' : 'Inactive'}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      <button
-                        onClick={() => handleEdit(branch)}
-                        className="p-3 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200"
-                        title="Edit Branch"
-                      >
-                        <PencilIcon className="w-5 h-5" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(branch.id)}
-                        className="p-3 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200"
-                        title="Delete Branch"
-                      >
-                        <TrashIcon className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex items-start space-x-4">
-                      <div className="p-2 bg-gray-100 rounded-lg">
-                        <MapPinIcon className="w-5 h-5 text-gray-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">{branch.address}</p>
-                        <p className="text-sm text-gray-500">{branch.city}, {branch.state} {branch.zipCode}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-4">
-                      <div className="p-2 bg-gray-100 rounded-lg">
-                        <PhoneIcon className="w-5 h-5 text-gray-600" />
-                      </div>
-                      <p className="text-sm font-medium text-gray-900">{branch.phone}</p>
-                    </div>
-
-                    <div className="flex items-center space-x-4">
-                      <div className="p-2 bg-gray-100 rounded-lg">
-                        <EnvelopeIcon className="w-5 h-5 text-gray-600" />
-                      </div>
-                      <p className="text-sm font-medium text-gray-900">{branch.email}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <BranchCard
+                key={branch.id}
+                branch={branch}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
             ))}
           </div>
         )}
 
-        {/* Premium Single-Page Form */}
-        {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[95vh] overflow-hidden animate-in zoom-in-95 duration-300">
-              {/* Form Header */}
-              <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 px-10 py-8">
-                <div className="absolute inset-0 bg-black opacity-10"></div>
-                <div className="relative flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-white bg-opacity-20 rounded-2xl backdrop-blur-sm">
-                      <BuildingOfficeIcon className="w-8 h-8 text-white" />
-                    </div>
-                    <div>
-                      <h2 className="text-3xl font-bold text-white">
-                        {editingBranch ? 'Edit Branch' : 'Add New Branch'}
-                      </h2>
-                      <p className="text-blue-100 mt-2 text-lg">
-                        {editingBranch ? 'Update branch information' : 'Create a new branch for your coworking space'}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setShowForm(false)
-                      setEditingBranch(null)
-                      resetForm()
-                    }}
-                    className="text-white hover:text-blue-200 transition-all duration-200 p-3 hover:bg-white hover:bg-opacity-20 rounded-xl"
-                  >
-                    <XMarkIcon className="w-6 h-6" />
-                  </button>
-                </div>
-                
-                {/* Decorative elements */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -translate-y-16 translate-x-16"></div>
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-5 rounded-full translate-y-12 -translate-x-12"></div>
-              </div>
-
-              {/* Form Content */}
-              <div className="p-10 overflow-y-auto max-h-[calc(95vh-200px)]">
-                <form onSubmit={handleSubmit} className="space-y-10">
-                  {/* Basic Information Section */}
-                  <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-8 border border-gray-100">
-                    <div className="flex items-center mb-8">
-                      <div className="p-3 bg-blue-100 rounded-xl mr-4">
-                        <BuildingOfficeIcon className="w-6 h-6 text-blue-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">Basic Information</h3>
-                        <p className="text-gray-600">Enter the basic details for your branch</p>
-                      </div>
-                    </div>
-                  
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-3">
-                          Branch Name *
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          className={`w-full px-6 py-4 border-2 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700 placeholder-gray-400 ${
-                            formErrors.name ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                          placeholder="e.g., Downtown Branch"
-                        />
-                        {formErrors.name && (
-                          <p className="mt-2 text-sm text-red-600 font-medium">{formErrors.name}</p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label htmlFor="isActive" className="block text-sm font-semibold text-gray-700 mb-3">
-                          Status
-                        </label>
-                        <select
-                          id="isActive"
-                          name="isActive"
-                          value={formData.isActive.toString()}
-                          onChange={handleInputChange}
-                          className="w-full px-6 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700 bg-white"
-                        >
-                          <option value="true">Active</option>
-                          <option value="false">Inactive</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Location Information Section */}
-                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-100">
-                    <div className="flex items-center mb-8">
-                      <div className="p-3 bg-green-100 rounded-xl mr-4">
-                        <MapPinIcon className="w-6 h-6 text-green-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">Location Information</h3>
-                        <p className="text-gray-600">Enter the complete address details</p>
-                      </div>
-                    </div>
-                  
-                    <div className="space-y-8">
-                      <div>
-                        <label htmlFor="address" className="block text-sm font-semibold text-gray-700 mb-3">
-                          Street Address *
-                        </label>
-                        <input
-                          type="text"
-                          id="address"
-                          name="address"
-                          value={formData.address}
-                          onChange={handleInputChange}
-                          className={`w-full px-6 py-4 border-2 rounded-xl focus:ring-4 focus:ring-green-100 focus:border-green-500 transition-all duration-200 text-gray-700 placeholder-gray-400 ${
-                            formErrors.address ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                          placeholder="123 Main Street, Suite 100"
-                        />
-                        {formErrors.address && (
-                          <p className="mt-2 text-sm text-red-600 font-medium">{formErrors.address}</p>
-                        )}
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div>
-                          <label htmlFor="city" className="block text-sm font-semibold text-gray-700 mb-3">
-                            City *
-                          </label>
-                          <input
-                            type="text"
-                            id="city"
-                            name="city"
-                            value={formData.city}
-                            onChange={handleInputChange}
-                            className={`w-full px-6 py-4 border-2 rounded-xl focus:ring-4 focus:ring-green-100 focus:border-green-500 transition-all duration-200 text-gray-700 placeholder-gray-400 ${
-                              formErrors.city ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-gray-300'
-                            }`}
-                            placeholder="Lahore"
-                          />
-                          {formErrors.city && (
-                            <p className="mt-2 text-sm text-red-600 font-medium">{formErrors.city}</p>
-                          )}
-                        </div>
-
-                        <div>
-                          <label htmlFor="state" className="block text-sm font-semibold text-gray-700 mb-3">
-                            State/Province *
-                          </label>
-                          <input
-                            type="text"
-                            id="state"
-                            name="state"
-                            value={formData.state}
-                            onChange={handleInputChange}
-                            className={`w-full px-6 py-4 border-2 rounded-xl focus:ring-4 focus:ring-green-100 focus:border-green-500 transition-all duration-200 text-gray-700 placeholder-gray-400 ${
-                              formErrors.state ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-gray-300'
-                            }`}
-                            placeholder="Punjab"
-                          />
-                          {formErrors.state && (
-                            <p className="mt-2 text-sm text-red-600 font-medium">{formErrors.state}</p>
-                          )}
-                        </div>
-
-                        <div>
-                          <label htmlFor="zipCode" className="block text-sm font-semibold text-gray-700 mb-3">
-                            ZIP/Postal Code *
-                          </label>
-                          <input
-                            type="text"
-                            id="zipCode"
-                            name="zipCode"
-                            value={formData.zipCode}
-                            onChange={handleInputChange}
-                            className={`w-full px-6 py-4 border-2 rounded-xl focus:ring-4 focus:ring-green-100 focus:border-green-500 transition-all duration-200 text-gray-700 placeholder-gray-400 ${
-                              formErrors.zipCode ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-gray-300'
-                            }`}
-                            placeholder="54000"
-                          />
-                          {formErrors.zipCode && (
-                            <p className="mt-2 text-sm text-red-600 font-medium">{formErrors.zipCode}</p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Contact Information Section */}
-                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-8 border border-purple-100">
-                    <div className="flex items-center mb-8">
-                      <div className="p-3 bg-purple-100 rounded-xl mr-4">
-                        <PhoneIcon className="w-6 h-6 text-purple-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">Contact Information</h3>
-                        <p className="text-gray-600">Enter the contact details for this branch</p>
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div>
-                        <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-3">
-                          Phone Number *
-                        </label>
-                        <input
-                          type="tel"
-                          id="phone"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleInputChange}
-                          className={`w-full px-6 py-4 border-2 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all duration-200 text-gray-700 placeholder-gray-400 ${
-                            formErrors.phone ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                          placeholder="+92 42 1234567"
-                        />
-                        {formErrors.phone && (
-                          <p className="mt-2 text-sm text-red-600 font-medium">{formErrors.phone}</p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-3">
-                          Email Address *
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          className={`w-full px-6 py-4 border-2 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all duration-200 text-gray-700 placeholder-gray-400 ${
-                            formErrors.email ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                          placeholder="branch@company.com"
-                        />
-                        {formErrors.email && (
-                          <p className="mt-2 text-sm text-red-600 font-medium">{formErrors.email}</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-
-              {/* Form Footer */}
-              <div className="bg-gradient-to-r from-gray-50 to-blue-50 px-10 py-8 border-t border-gray-200">
-                <div className="flex justify-end space-x-6">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowForm(false)
-                      setEditingBranch(null)
-                      resetForm()
-                    }}
-                    className="px-8 py-4 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-all duration-200 font-medium"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSubmit}
-                    disabled={isSubmitting}
-                    className="px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-3 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <ArrowPathIcon className="w-5 h-5 animate-spin" />
-                        <span>Saving...</span>
-                      </>
-                    ) : (
-                      <>
-                        <CheckCircleIcon className="w-5 h-5" />
-                        <span>{editingBranch ? 'Update Branch' : 'Create Branch'}</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   )

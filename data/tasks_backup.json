@@ -64,19 +64,11 @@
     "dueDate": "2025-10-11T14:00:00.000Z",
     "isRecurring": false,
     "attachments": [],
-    "comments": [
-      {
-        "id": "comment-1761389896455",
-        "comment": "demooo",
-        "userId": "3",
-        "userName": "Admin User",
-        "createdAt": "2025-10-25T10:58:16.455Z"
-      }
-    ],
+    "comments": [],
     "history": [],
     "fineAmount": 0,
     "fineApplied": false,
     "createdAt": "2025-10-09T15:34:15.402Z",
-    "updatedAt": "2025-10-25T10:58:16.455Z"
+    "updatedAt": "2025-10-09T15:34:15.402Z"
   }
 ]

@@ -27,6 +27,7 @@ export interface InventoryItem {
   minimumStock?: number
   maximumStock?: number
   isActive: boolean
+  branchId?: string
   createdAt: string
   updatedAt: string
 }

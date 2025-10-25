@@ -222,14 +222,19 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </div>
       </div>
 
-      {/* Mobile sidebar */}
-      <div className="md:hidden">
+      {/* Mobile sidebar - Hidden by default, will be shown with JavaScript */}
+      <div className="md:hidden hidden" id="mobile-sidebar">
         {/* Mobile sidebar overlay */}
         <div className="fixed inset-0 flex z-40">
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-75" aria-hidden="true"></div>
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-75" aria-hidden="true" id="mobile-overlay"></div>
           <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white">
             <div className="absolute top-0 right-0 -mr-12 pt-2">
-              <button className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+              <button 
+                className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                onClick={() => {
+                  document.getElementById('mobile-sidebar')?.classList.add('hidden')
+                }}
+              >
                 <span className="sr-only">Close sidebar</span>
                 <svg className="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -261,6 +266,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                           ? 'bg-blue-100 text-blue-900'
                           : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       }`}
+                      onClick={() => {
+                        document.getElementById('mobile-sidebar')?.classList.add('hidden')
+                      }}
                     >
                       <Icon
                         className={`mr-4 flex-shrink-0 h-6 w-6 ${
@@ -302,7 +310,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <div className="md:hidden bg-white shadow-sm border-b border-gray-200">
           <div className="flex items-center justify-between px-4 py-3">
             <div className="flex items-center">
-              <button className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100">
+              <button 
+                className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+                onClick={() => {
+                  document.getElementById('mobile-sidebar')?.classList.remove('hidden')
+                }}
+              >
                 <span className="sr-only">Open sidebar</span>
                 <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -328,7 +341,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </div>
 
         {/* Page content */}
-        <main className="flex-1">
+        <main className="flex-1 p-6">
           {children}
         </main>
       </div>

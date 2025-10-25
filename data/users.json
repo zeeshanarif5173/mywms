@@ -41,5 +41,53 @@
     "remarks": "Test user for persistent storage",
     "createdAt": "2025-10-22T01:15:37.024Z",
     "updatedAt": "2025-10-22T01:15:37.029Z"
+  },
+  {
+    "id": "user-1761173994087",
+    "name": "customer",
+    "email": "customer@example.com",
+    "phone": "03069181640",
+    "company": "",
+    "role": "CUSTOMER",
+    "accountStatus": "Active",
+    "gatePassId": "GP-40948603",
+    "packageId": null,
+    "branchId": 1,
+    "remarks": "Customer ",
+    "createdAt": "2025-10-22T22:59:54.087Z",
+    "updatedAt": "2025-10-22T22:59:54.087Z"
+  },
+  {
+    "id": "staff-1",
+    "name": "Mike Johnson",
+    "email": "mike.johnson@company.com",
+    "phone": "0300-123-4567",
+    "role": "STAFF",
+    "accountStatus": "Active",
+    "branchId": "branch-1761173300145",
+    "createdAt": "2025-10-22T00:00:00.000Z",
+    "updatedAt": "2025-10-22T00:00:00.000Z"
+  },
+  {
+    "id": "staff-2",
+    "name": "Sarah Wilson",
+    "email": "sarah.wilson@company.com",
+    "phone": "0300-234-5678",
+    "role": "TEAM_LEAD",
+    "accountStatus": "Active",
+    "branchId": "branch-1761173300145",
+    "createdAt": "2025-10-22T00:00:00.000Z",
+    "updatedAt": "2025-10-22T00:00:00.000Z"
+  },
+  {
+    "id": "staff-3",
+    "name": "John Smith",
+    "email": "john.smith@company.com",
+    "phone": "0300-345-6789",
+    "role": "STAFF",
+    "accountStatus": "Active",
+    "branchId": "branch-1761173300145",
+    "createdAt": "2025-10-22T00:00:00.000Z",
+    "updatedAt": "2025-10-22T00:00:00.000Z"
   }
 ]

@@ -10,14 +10,40 @@ export default function Home() {
   const [redirecting, setRedirecting] = useState(false)
 
   useEffect(() => {
+    console.log('Home page - Session status:', { status, session })
+    
     if (status === 'loading') return // Still loading
     
     if (!session) {
+      console.log('No session, redirecting to signin')
       setRedirecting(true)
       router.push('/auth/signin')
     } else {
+      console.log('Session found, redirecting based on role:', session.user?.role)
       setRedirecting(true)
-      router.push('/dashboard')
+      // Redirect based on user role
+      if (session?.user?.role) {
+        switch (session.user.role) {
+          case 'CUSTOMER':
+            router.push('/customer/dashboard')
+            break
+          case 'MANAGER':
+            router.push('/manager/customers')
+            break
+          case 'STAFF':
+            router.push('/staff/dashboard')
+            break
+          case 'ADMIN':
+            router.push('/admin/dashboard')
+            break
+          default:
+            router.push('/dashboard')
+        }
+      } else {
+        console.log('No role found, redirecting to dashboard')
+        // Fallback if no role found
+        router.push('/dashboard')
+      }
     }
   }, [session, status, router])
 

@@ -1,1 +1,46 @@
-[]
+[
+  {
+    "id": "entry-1",
+    "staffId": "staff-1",
+    "checkInTime": "2025-10-22T09:00:00.000Z",
+    "checkOutTime": "2025-10-22T17:00:00.000Z",
+    "duration": 480,
+    "date": "2025-10-22",
+    "status": "Checked Out",
+    "notes": "Regular work day",
+    "branchId": "branch-1761173300145"
+  },
+  {
+    "id": "entry-2",
+    "staffId": "staff-1",
+    "checkInTime": "2025-10-21T09:30:00.000Z",
+    "checkOutTime": "2025-10-21T18:00:00.000Z",
+    "duration": 510,
+    "date": "2025-10-21",
+    "status": "Checked Out",
+    "notes": "Extended hours for project completion",
+    "branchId": "branch-1761173300145"
+  },
+  {
+    "id": "entry-3",
+    "staffId": "staff-2",
+    "checkInTime": "2025-10-22T08:45:00.000Z",
+    "checkOutTime": null,
+    "duration": null,
+    "date": "2025-10-22",
+    "status": "Checked In",
+    "notes": "Currently working",
+    "branchId": "branch-1761173300145"
+  },
+  {
+    "id": "entry-4",
+    "staffId": "staff-2",
+    "checkInTime": "2025-10-21T10:00:00.000Z",
+    "checkOutTime": "2025-10-21T16:30:00.000Z",
+    "duration": 390,
+    "date": "2025-10-21",
+    "status": "Checked Out",
+    "notes": "Half day work",
+    "branchId": "branch-1761173300145"
+  }
+]

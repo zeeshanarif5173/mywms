@@ -16,45 +16,38 @@ export default function SignIn() {
     setLoading(true)
 
     try {
+      console.log('Attempting sign in with:', { email, password: '***' })
+      
       const result = await signIn('credentials', {
         email,
         password,
         redirect: false,
       })
 
+      console.log('Sign in result:', result)
+
       if (result?.error) {
+        console.log('Sign in error:', result.error)
         toast.error('Invalid credentials')
-      } else {
+        setLoading(false)
+        return
+      }
+
+      if (result?.ok) {
         toast.success('Signed in successfully')
         
-        // Get the session to determine user role
-        const session = await getSession()
+        // Wait a moment for the session to be established
+        await new Promise(resolve => setTimeout(resolve, 1500))
         
-        // Redirect based on user role
-        if (session?.user?.role) {
-          switch (session.user.role) {
-            case 'CUSTOMER':
-              router.push('/dashboard')
-              break
-            case 'MANAGER':
-              router.push('/manager/customers')
-              break
-            case 'STAFF':
-              router.push('/staff/dashboard')
-              break
-            case 'ADMIN':
-              router.push('/admin/dashboard')
-              break
-            default:
-              router.push('/dashboard')
-          }
-        } else {
-          // Fallback if no role found
-          router.push('/dashboard')
-        }
+        // Force a hard refresh to ensure session is properly loaded
+        window.location.href = '/'
+      } else {
+        console.log('Sign in failed:', result)
+        toast.error('Sign in failed')
       }
     } catch (error) {
-      toast.error('An error occurred')
+      console.error('Sign in error:', error)
+      toast.error('An error occurred during sign in')
     } finally {
       setLoading(false)
     }

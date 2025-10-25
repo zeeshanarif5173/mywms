@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from "@/lib/auth"
-import { getTaskById, addTaskComment } from '@/lib/mock-data'
-
+import { getPersistentTasks, savePersistentTasks } from '@/lib/persistent-tasks'
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
@@ -18,15 +17,11 @@ export async function POST(
     }
 
     const taskId = params.id
-    const task = getTaskById(taskId)
+    const tasks = getPersistentTasks()
+    const taskIndex = tasks.findIndex(t => t.id === taskId)
 
-    if (!task) {
+    if (taskIndex === -1) {
       return NextResponse.json({ error: 'Task not found' }, { status: 404 })
-    }
-
-    // Check permissions
-    if (session.user.role === 'MANAGER' && task.branchId !== session.user.branchId) {
-      return NextResponse.json({ error: 'Access denied' }, { status: 403 })
     }
 
     const body = await request.json()
@@ -36,17 +31,25 @@ export async function POST(
       return NextResponse.json({ error: 'Comment is required' }, { status: 400 })
     }
 
-    // Add the comment
-    const newComment = addTaskComment(
-      taskId,
-      session.user.id,
-      session.user.name || 'User',
-      comment
-    )
-
-    if (!newComment) {
-      return NextResponse.json({ error: 'Failed to add comment' }, { status: 500 })
+    // Create new comment
+    const newComment = {
+      id: `comment-${Date.now()}`,
+      comment,
+      userId: session.user.id,
+      userName: session.user.name || 'User',
+      createdAt: new Date().toISOString()
     }
+
+    // Add comment to task
+    const task = tasks[taskIndex]
+    if (!task.comments) {
+      task.comments = []
+    }
+    task.comments.push(newComment)
+    task.updatedAt = new Date().toISOString()
+
+    // Save updated tasks
+    savePersistentTasks(tasks)
 
     return NextResponse.json(newComment, { status: 201 })
 

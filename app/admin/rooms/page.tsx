@@ -40,7 +40,7 @@ interface Room {
 }
 
 interface Branch {
-  id: number
+  id: string
   name: string
   address: string
   city: string
@@ -182,7 +182,7 @@ export default function AdminRooms() {
   }
 
   const handleDelete = async (room: Room) => {
-    const confirmMessage = `Are you sure you want to delete this room?\n\nRoom: ${room.name} (${room.roomNumber})\nBranch: ${branches.find(b => b.id.toString() === room.branchId)?.name}\nType: ${getRoomTypeLabel(room.type)}\n\nThis action cannot be undone.`
+    const confirmMessage = `Are you sure you want to delete this room?\n\nRoom: ${room.name} (${room.roomNumber})\nBranch: ${branches.find(b => b.id === room.branchId)?.name}\nType: ${getRoomTypeLabel(room.type)}\n\nThis action cannot be undone.`
     
     if (!confirm(confirmMessage)) return
     
@@ -364,7 +364,7 @@ export default function AdminRooms() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredRooms.map((room) => {
-              const branch = branches.find(b => b.id.toString() === room.branchId)
+              const branch = branches.find(b => b.id === room.branchId)
               return (
                 <div key={room.id} className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                   <div className="flex items-start justify-between mb-4">

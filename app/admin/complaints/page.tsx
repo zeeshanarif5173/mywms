@@ -15,7 +15,8 @@ import {
   StarIcon,
   ChatBubbleLeftRightIcon,
   CalendarIcon,
-  MagnifyingGlassIcon
+  MagnifyingGlassIcon,
+  XMarkIcon
 } from '@heroicons/react/24/outline'
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid'
 
@@ -63,6 +64,7 @@ export default function AdminComplaints() {
   const [statusFilter, setStatusFilter] = useState('ALL')
   const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null)
   const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const [showDetailsModal, setShowDetailsModal] = useState(false)
   
   // Form data for updating complaints
   const [updateData, setUpdateData] = useState({
@@ -504,7 +506,7 @@ export default function AdminComplaints() {
                 <button
                   onClick={() => {
                     setSelectedComplaint(complaint)
-                    // Show complaint details
+                    setShowDetailsModal(true)
                   }}
                   className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center space-x-1"
                 >
@@ -591,6 +593,191 @@ export default function AdminComplaints() {
                   Update Status
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Complaint Details Modal */}
+      {showDetailsModal && selectedComplaint && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-semibold text-gray-900">Complaint Details</h3>
+                <button
+                  onClick={() => {
+                    setShowDetailsModal(false)
+                    setSelectedComplaint(null)
+                  }}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <XMarkIcon className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+            
+            <div className="p-6 space-y-6">
+              {/* Complaint Info */}
+              <div>
+                <h4 className="text-lg font-medium text-gray-900 mb-2">{selectedComplaint.title}</h4>
+                <div className="flex items-center space-x-4 mb-4">
+                  <span className={`px-3 py-1 text-sm font-semibold rounded-full ${getStatusColor(selectedComplaint.status)}`}>
+                    {selectedComplaint.status}
+                  </span>
+                  {selectedComplaint.customer && (
+                    <span className="text-sm text-gray-600">
+                      Customer: {selectedComplaint.customer.name}
+                    </span>
+                  )}
+                </div>
+                <p className="text-gray-700">{selectedComplaint.description}</p>
+              </div>
+
+              {/* Complaint Details Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h5 className="text-sm font-medium text-gray-700 mb-3">Complaint Information</h5>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-500">Created:</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {new Date(selectedComplaint.createdAt).toLocaleString()}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-500">Last Updated:</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {new Date(selectedComplaint.updatedAt).toLocaleString()}
+                      </span>
+                    </div>
+                    {selectedComplaint.resolvedAt && (
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-500">Resolved:</span>
+                        <span className="text-sm font-medium text-gray-900">
+                          {new Date(selectedComplaint.resolvedAt).toLocaleString()}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-500">Resolution Time:</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {formatResolvingTime(selectedComplaint.resolvingTime)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h5 className="text-sm font-medium text-gray-700 mb-3">Customer Information</h5>
+                  <div className="space-y-2">
+                    {selectedComplaint.customer ? (
+                      <>
+                        <div className="flex justify-between">
+                          <span className="text-sm text-gray-500">Name:</span>
+                          <span className="text-sm font-medium text-gray-900">{selectedComplaint.customer.name}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-sm text-gray-500">Email:</span>
+                          <span className="text-sm font-medium text-gray-900">{selectedComplaint.customer.email}</span>
+                        </div>
+                      </>
+                    ) : (
+                      <span className="text-sm text-gray-500">Customer information not available</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Remarks */}
+              {selectedComplaint.remarks && (
+                <div>
+                  <h5 className="text-sm font-medium text-gray-700 mb-3">Admin Remarks</h5>
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <p className="text-sm text-gray-700">{selectedComplaint.remarks}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Feedback */}
+              {selectedComplaint.feedback && (
+                <div>
+                  <h5 className="text-sm font-medium text-gray-700 mb-3">Customer Feedback</h5>
+                  <div className="bg-yellow-50 p-4 rounded-lg">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <span className="text-sm font-medium text-gray-900">Rating:</span>
+                      <div className="flex items-center space-x-1">
+                        {[...Array(5)].map((_, i) => (
+                          <StarIconSolid
+                            key={i}
+                            className={`w-4 h-4 ${
+                              i < selectedComplaint.feedback!.rating ? 'text-yellow-400' : 'text-gray-300'
+                            }`}
+                          />
+                        ))}
+                        <span className="text-sm text-gray-600 ml-1">
+                          ({selectedComplaint.feedback.rating}/5)
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-700">{selectedComplaint.feedback.comment}</p>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Submitted: {new Date(selectedComplaint.feedback.submittedAt).toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Images */}
+              {(selectedComplaint.photo || selectedComplaint.workCompletionImage) && (
+                <div>
+                  <h5 className="text-sm font-medium text-gray-700 mb-3">Images</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {selectedComplaint.photo && (
+                      <div className="bg-gray-50 p-4 rounded-lg">
+                        <h6 className="text-sm font-medium text-gray-900 mb-2">Original Complaint Photo</h6>
+                        <div className="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
+                          <PhotoIcon className="w-8 h-8 text-gray-400" />
+                        </div>
+                      </div>
+                    )}
+                    {selectedComplaint.workCompletionImage && (
+                      <div className="bg-gray-50 p-4 rounded-lg">
+                        <h6 className="text-sm font-medium text-gray-900 mb-2">Work Completion Photo</h6>
+                        <div className="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
+                          <CheckCircleIcon className="w-8 h-8 text-green-400" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="p-6 border-t border-gray-200 flex justify-end space-x-3">
+              <button
+                onClick={() => {
+                  setShowDetailsModal(false)
+                  setSelectedComplaint(null)
+                }}
+                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  setShowDetailsModal(false)
+                  setUpdateData({ 
+                    status: selectedComplaint.status, 
+                    remarks: selectedComplaint.remarks || '', 
+                    workCompletionImage: null 
+                  })
+                  setShowUpdateModal(true)
+                }}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Update Status
+              </button>
             </div>
           </div>
         </div>
